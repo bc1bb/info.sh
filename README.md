@@ -1,4 +1,6 @@
-*info.sh* is a little script that works like `screenfetch` or `neofetch` it show infos and was originally made for Termux (Linux on Android) but it was tested on Ubuntu, GhostBSD and Termux (with zsh for all of them)
+<div align="right"><img src="https://raw.githubusercontent.com/jusdepatate/info.sh/master/logomadein5minutes.png" /></div><br>
+
+<a href="https://github.com/jusdepatate/info.sh/blob/master/info.sh"><i>info.sh</i></a> is a little script that works like `screenfetch` or `neofetch` it show infos and was originally made for Termux (Linux on Android) but it was tested on Ubuntu, GhostBSD and Termux (with zsh for all of them)
 
 Example :
 
