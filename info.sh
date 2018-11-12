@@ -152,10 +152,9 @@ fi
 SIXTH="Local IP: "
 # set variable SIXTH to "Local IP: "
 
-# Thanks to Dryusdan :)
 # Tested on Debian 9.5 and 9.6 and Termux
-SIXTH+="$(ip route get 2 | awk '{print $7;exit}')"
-# get the output of 'ip route get 2', do some tricks with awk and put output into variable SIXTH
+SIXTH+="$(ip route get 1 | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -n 2 | grep -o "2:[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*")"
+# THAT FUCKIN' AWFUL CODE JUST FOR A FUCKIN' LOCAL IP
 
 # --- ECHO ---
 
