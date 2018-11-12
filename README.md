@@ -55,5 +55,19 @@ Report any errors here :
 https://github.com/jusdepatate/info.sh
 ```
 
+From Debian
+```
+jusdepatate@jdpVPS
+Debian GNU/Linux 9 (stretch) (Linux 4.9.0-8-amd64)
+Package Arch: amd64
+Shell: zsh 5.3.1
+Public IP(v4): 185.216.25.100 (FR)
+Local IP: 185.216.25.1
+
+
+Report any errors here :
+https://github.com/jusdepatate/info.sh
+```
+
 Pull requests and issues are welcome :)<br>
 <img width="80px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/By-nc.svg/2560px-By-nc.svg">
