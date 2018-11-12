@@ -80,15 +80,19 @@ else
         FOURTH+=" $SHELL"
 fi
 
-FIFTH="Public IP: "
-FIFTH+=" $(curl -s https://ifconfig.io/ip)"
+FIFTH="Public IP(v4): "
+FIFTH+=" $(curl -s --max-time 10 https://v4.ident.me)"
 FIFTH+=" ($(curl -s --max-time 10 ifconfig.io/country_code))"
 
-SIXTH="Local IP:"
+if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
+        FIFTH+="\nPublic IP(v6): $(curl -s --max-time 10 https://v6.ident.me/) ($(curl -s --max-time 10 ifconfig.io/country_code))"
+fi
 
-# Works for *BSD and Linux... Who use MAC OS X ? :troll:
-SIXTH+="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
+SIXTH="Local IP: "
 
+# Thanks to Dryusdan :)
+# Tested on Debian 9.5 and 9.6 and Termux
+SIXTH+="$(ip route get 2 | awk '{print $7;exit}')"
 
 # --- ECHO ---
 
