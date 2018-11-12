@@ -3,11 +3,11 @@
 <a href="https://github.com/jusdepatate/info.sh/blob/master/info.sh"><i>info.sh</i></a> is a little script that works like `screenfetch` or `neofetch` it shows infos and was originally made for Termux (Linux on Android) but it was tested on Ubuntu and Termux (with zsh for all of them)
 
 ## Works on
-Ubuntu (tested with official Ubuntu and WSL), Termux
+Ubuntu (tested with official Ubuntu and WSL), Termux, Debian (tested with 9.x)
 
 ## Doesn't works on
 ### Partially works
-Arch Linux (thanks to oräkle), GhostBSD, Debian
+Arch Linux (thanks to oräkle), GhostBSD
 ### Shows nothing
 Alpine Linux ([ish](http://ish.app))
 
