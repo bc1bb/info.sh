@@ -85,10 +85,8 @@ else
                 # or if which apt is true (package exist)
                         source /etc/os-release
                         # take variables from /etc/os-release
-                        source /etc/lsb-release
-                        # and variables from /etc/lsb-release
-                        OS="$DISTRIB_ID ${DISTRIB_CODENAME^} $DISTRIB_RELEASE"
-                        # set variable OS to DISTRIB_ID (ex: Ubuntu) and DISTRIB_CODENAME with first letter uppercased and DISTRIB_RELEASE
+                        OS="$PRETTY_NAME"
+                        # set variable OS to PRETTY_NAME
                 elif [ `which apk` ]; then
                 # or if which apk is positive (package exists)
                         OS="Alpine Linux"
