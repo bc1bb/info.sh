@@ -17,10 +17,10 @@ Alpine Linux ([ish](http://ish.app))
 - Shows username and hostname
 - Bad code
 - Shows Mobile ISP (only on Termux)
-- Explain every line
 
 ### Planned
 - [~~Show IPv4 and IPv6 on two different line~~](https://github.com/jusdepatate/info.sh/commit/c2a929935705e8647f2cce32a9d5e4fc54d026a6)
+- [~~Explain every line~~](https://github.com/jusdepatate/info.sh/commit/f45db7cf90e5f412541e4a05098dfabed694d5d0)
 - Compatibility with iSH
 - Compatibility with MAC OS
 - Compatibility with \*BSD
