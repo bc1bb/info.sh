@@ -19,7 +19,7 @@ Alpine Linux ([ish](http://ish.app))
 - Shows Mobile ISP (only on Termux)
 
 ### Planned
-- Show IPv4 and IPv6 on two different line
+- [~~Show IPv4 and IPv6 on two different line~~](https://github.com/jusdepatate/info.sh/commit/c2a929935705e8647f2cce32a9d5e4fc54d026a6)
 - Compatibility with iSH
 - Compatibility with MAC OS
 - Compatibility with \*BSD
