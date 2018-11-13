@@ -2,30 +2,47 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.11-10 (public)
+# Actual release :      2018.11.13-03 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android)
-# but it was tested on Ubuntu, GhostBSD and Termux.
-#
+# but it was tested on Ubuntu, GhostBSD, Termux and iSH.                          
+#                                        
 # License : CC-BY-NC "Jus de Patate, 2018"
+                                         
+KERNELNAME="$(uname -s)"                 
+OS="$(uname -o)"                         
+KERNEL="$(uname -r)"                     
+USER="$(whoami)"                         
+FIRST="$USER@"                           
+BONUS1=""                                
 
-KERNELNAME="$(uname -s)"
-# set variable KERNELNAME to the output of command 'uname -s'
-OS="$(uname -o)"
-# set variable OS to the output of command 'uname -o'
-KERNEL="$(uname -r)"
-# set variable KERNEL to the output of command 'uname -r'
-PKGARCH="$(dpkg --print-architecture)"
-# set variable PKGARCH to the output of command 'dpkg --print-architecture'
-USER="$(whoami)"
-# set variable USER to the output of commande 'whoami'
-
-FIRST="$USER@"
-# set variable FIRST (first line of output) to the variable USER and @
-
-if [ "$OS" = "Android" ];then
+if [ "$(uname -r || grep 'ish')" ]; then 
+# if device is iSH (Alpine Linux on iOS)
+        echo "$FIRST$(hostname)"  
+        # says user@name of iPad/iPhone/iPod
+        echo "iOS/Alpine Linux ($(uname -o) $(uname -r))"
+        # says OS, kernel name and version
+        echo "Arch: $(uname -m)"
+        # says iSH's arch
+        if [ "$SHELL" = "/bin/ash" ]; then
+        # if variable SHELL is /bin/ash
+                    echo "Shell: ash"
+                    # says shell's name
+            else
+            # if shell isn't /bin/ash
+                    echo "Shell: $SHELL"
+                    # says variable SHELL
+        fi
+        # end of if
+        echo
+        # add a line
+else
+# if device isn't iSH
+        PKGARCH="$(dpkg --print-architecture)"
+        # Set variable PKGARCH to the output of "dpkg --print-architecture" (doesn't work on Arch Linux)
+if [ "$OS" = "Android" ];then         
 # If user's os is Android (Termux)
         # --- FOR ANDROID (Termux) ---
         ISPNAME="$(getprop gsm.sim.operator.alpha)"
