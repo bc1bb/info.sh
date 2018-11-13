@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.13-03 (public)
+# Actual release :      2018.11.13-04 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -18,27 +18,41 @@ USER="$(whoami)"
 FIRST="$USER@"                           
 BONUS1=""                                
 
-if [ "$(uname -r || grep 'ish')" ]; then 
-# if device is iSH (Alpine Linux on iOS)
-        echo "$FIRST$(hostname)"  
-        # says user@name of iPad/iPhone/iPod
+if [ "$(uname -r || grep 'ish')" ]; then
+        echo "$FIRST$(hostname)"
+        # user@machine name
         echo "iOS/Alpine Linux ($(uname -o) $(uname -r))"
-        # says OS, kernel name and version
+        # says the kernel name (Linux) and version
         echo "Arch: $(uname -m)"
-        # says iSH's arch
+        # says the arch of iSH
         if [ "$SHELL" = "/bin/ash" ]; then
-        # if variable SHELL is /bin/ash
+        # if SHELL is ash
                     echo "Shell: ash"
-                    # says shell's name
+                    # ...
             else
-            # if shell isn't /bin/ash
+            # if SHELL isn't ash
                     echo "Shell: $SHELL"
-                    # says variable SHELL
+                    # give the path to the shell
+            fi
+            # end of if
+            echo "Public IP(v4): $(curl -s --max-time 10 https://v4.ident.me) ($(curl -s --max-time 10 ifconfig.io/country_code))"
+            # says the public ipv4
+            if [ "$(curl -s --max-time 10 https://v6.ident.me)" ]; then
+            # if i can connect to v6.ident.me with timeout of 10s
+                echo "Public IP(v6): $(curl -s --max-time 10 https://v6.ident.me) ($(curl -s --max-time 10 iconfig.io/country_code))"
+                # says IPv6 of the user (for now it is impossible)
+        else
+        # if cul output is negative (error)
+                echo "You probably have an IPv6 but iSH doesn't support it :("
+                # :(
         fi
         # end of if
+        echo "Due to limitation of iSH, this script can't show local ip"           
+        # :(
+
         echo
         # add a line
-else
+else    
 # if device isn't iSH
         PKGARCH="$(dpkg --print-architecture)"
         # Set variable PKGARCH to the output of "dpkg --print-architecture" (doesn't work on Arch Linux)
