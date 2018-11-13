@@ -2,30 +2,61 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.11-10 (public)
+# Actual release :      2018.11.13-04 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android)
-# but it was tested on Ubuntu, GhostBSD and Termux.
-#
+# but it was tested on Ubuntu, GhostBSD, Termux and iSH.                          
+#                                        
 # License : CC-BY-NC "Jus de Patate, 2018"
+                                         
+KERNELNAME="$(uname -s)"                 
+OS="$(uname -o)"                         
+KERNEL="$(uname -r)"                     
+USER="$(whoami)"                         
+FIRST="$USER@"                           
+BONUS1=""                                
 
-KERNELNAME="$(uname -s)"
-# set variable KERNELNAME to the output of command 'uname -s'
-OS="$(uname -o)"
-# set variable OS to the output of command 'uname -o'
-KERNEL="$(uname -r)"
-# set variable KERNEL to the output of command 'uname -r'
-PKGARCH="$(dpkg --print-architecture)"
-# set variable PKGARCH to the output of command 'dpkg --print-architecture'
-USER="$(whoami)"
-# set variable USER to the output of commande 'whoami'
+if [ "$(uname -r || grep 'ish')" ]; then
+        echo "$FIRST$(hostname)"
+        # user@machine name
+        echo "iOS/Alpine Linux ($(uname -o) $(uname -r))"
+        # says the kernel name (Linux) and version
+        echo "Arch: $(uname -m)"
+        # says the arch of iSH
+        if [ "$SHELL" = "/bin/ash" ]; then
+        # if SHELL is ash
+                    echo "Shell: ash"
+                    # ...
+            else
+            # if SHELL isn't ash
+                    echo "Shell: $SHELL"
+                    # give the path to the shell
+            fi
+            # end of if
+            echo "Public IP(v4): $(curl -s --max-time 10 https://v4.ident.me) ($(curl -s --max-time 10 ifconfig.io/country_code))"
+            # says the public ipv4
+            if [ "$(curl -s --max-time 10 https://v6.ident.me)" ]; then
+            # if i can connect to v6.ident.me with timeout of 10s
+                echo "Public IP(v6): $(curl -s --max-time 10 https://v6.ident.me) ($(curl -s --max-time 10 iconfig.io/country_code))"
+                # says IPv6 of the user (for now it is impossible)
+        else
+        # if cul output is negative (error)
+                echo "You probably have an IPv6 but iSH doesn't support it :("
+                # :(
+        fi
+        # end of if
+        echo "Due to limitation of iSH, this script can't show local ip"           
+        # :(
 
-FIRST="$USER@"
-# set variable FIRST (first line of output) to the variable USER and @
-
-if [ "$OS" = "Android" ];then
+        echo
+        # add a line
+else    
+# if device isn't iSH
+        PKGARCH="$(dpkg --print-architecture)"
+        # Set variable PKGARCH to the output of "dpkg --print-architecture" (doesn't work on Arch Linux)
+if [ "$OS" = "Android" ];then         
 # If user's os is Android (Termux)
         # --- FOR ANDROID (Termux) ---
         ISPNAME="$(getprop gsm.sim.operator.alpha)"

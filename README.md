@@ -3,13 +3,13 @@
 <a href="https://github.com/jusdepatate/info.sh/blob/master/info.sh"><i>info.sh</i></a> is a little script that works like `screenfetch` or `neofetch` it shows infos and was originally made for Termux (Linux on Android) but it was tested on Ubuntu and Termux (with zsh for all of them)
 
 ## Works on
-Ubuntu (tested with official Ubuntu and WSL), Termux, Debian (tested with 9.x)
+Ubuntu (tested with official Ubuntu and WSL), Termux, Debian (tested with 9.x), [iSH](https://ish.app)
 
 ## Doesn't works on
 ### Partially works
 Arch Linux (thanks to oräkle), GhostBSD
 ### Shows nothing
-Alpine Linux ([ish](http://ish.app))
+...
 
 ## Features
 - Shows IP (public and local)
@@ -53,6 +53,20 @@ Mobile ISP : Free (fr)
 
 Report any errors here :
 https://github.com/jusdepatate/info.sh
+```
+
+From iSH
+```
+root@jdpiPad                                                                                                                              
+iOS/Alpine Linux (Linux 3.2.0-ish)                                                                                                         
+Arch: i686                                                                                                                                 
+Shell: ash                                                                                                                                 
+Public IP(v4): REDACTED (FR)                                                                                                         
+You probably have an IPv6 but iSH doesn't support it :(                                                                                    
+Due to limitation of iSH this script is unable to show local ip                                                                            
+                                                                                                                                           
+Report any errors here :                                                                                                                   
+https://github.com/jusdepatate/info.sh    
 ```
 
 From Debian
