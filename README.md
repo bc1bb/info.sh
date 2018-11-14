@@ -3,7 +3,7 @@
 <a href="https://github.com/jusdepatate/info.sh/blob/master/info.sh"><i>info.sh</i></a> is a little script that works like `screenfetch` or `neofetch` it shows infos and was originally made for Termux (Linux on Android) but it was tested on Ubuntu and Termux (with zsh for all of them)
 
 ## Works on
-Ubuntu (tested with official Ubuntu and WSL), Termux, Debian (tested with 9.x), [iSH](https://ish.app)
+Ubuntu (tested with official Ubuntu and WSL), Termux, Debian (tested with 9.x), [iSH](https://ish.app), [Windows 10](https://github.com/jusdepatate/info.sh/blob/master/info.bat)
 
 ## Doesn't works on
 ### Partially works
@@ -22,6 +22,7 @@ Arch Linux (thanks to oräkle), GhostBSD
 - [~~Show IPv4 and IPv6 on two different line~~](https://github.com/jusdepatate/info.sh/commit/c2a929935705e8647f2cce32a9d5e4fc54d026a6)
 - [~~Explain every line~~](https://github.com/jusdepatate/info.sh/commit/f45db7cf90e5f412541e4a05098dfabed694d5d0)
 - [~~Compatibility with iSH~~](https://github.com/jusdepatate/info.sh/commit/f3bbc05b6e4225d06757b54f31ecff7ef60b2448)
+- [~~.bat version~~](https://github.com/jusdepatate/info.sh/commit/429e13447603005a4631155ed11b436d3561e29e)
 - Compatibility with MAC OS
 - Compatibility with \*BSD
 
@@ -78,6 +79,20 @@ Shell: zsh 5.3.1
 Public IP(v4): 185.216.25.100 (FR)
 Local IP: 185.216.25.1
 
+
+Report any errors here :
+https://github.com/jusdepatate/info.sh
+```
+
+From Windows
+```
+jusdepatate@DESKTOP-GKG4PAL
+Microsoft Windows 10 (Windows NT 10.0)
+Arch: AMD64
+CMD: cmd.exe
+Public IP(v4): REDACTED (FR)
+Public IP(v6): REDACTED (FR)
+Local IP: 192.168.0.18
 
 Report any errors here :
 https://github.com/jusdepatate/info.sh
