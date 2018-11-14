@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/sh
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
@@ -10,39 +10,40 @@
 # but it was tested on Ubuntu, GhostBSD, Termux and iSH.                          
 #                                        
 # License : CC-BY-NC "Jus de Patate, 2018"
-                                         
+
 KERNELNAME="$(uname -s)"                 
 OS="$(uname -o)"                         
 KERNEL="$(uname -r)"                     
 USER="$(whoami)"                         
+HOSTNAME="$(hostname)"
 FIRST="$USER@"                           
 BONUS1=""                                
 
-if [ "$(uname -r || grep 'ish')" ]; then
-        echo "$FIRST$(hostname)"
+if [ $(uname -r | grep "ish") ]; then
+        echo "$USER@$HOSTNAME"
         # user@machine name
-        echo "iOS/Alpine Linux ($(uname -o) $(uname -r))"
+        echo "iOS/Alpine Linux $OS $KERNEL"
         # says the kernel name (Linux) and version
         echo "Arch: $(uname -m)"
         # says the arch of iSH
         if [ "$SHELL" = "/bin/ash" ]; then
-        # if SHELL is ash
-                    echo "Shell: ash"
-                    # ...
-            else
-            # if SHELL isn't ash
-                    echo "Shell: $SHELL"
-                    # give the path to the shell
-            fi
-            # end of if
-            echo "Public IP(v4): $(curl -s --max-time 10 https://v4.ident.me) ($(curl -s --max-time 10 ifconfig.io/country_code))"
-            # says the public ipv4
-            if [ "$(curl -s --max-time 10 https://v6.ident.me)" ]; then
-            # if i can connect to v6.ident.me with timeout of 10s
+                # if SHELL is ash
+                echo "Shell: ash"
+                # ...
+        else
+                # if SHELL isn't ash
+                echo "Shell: $SHELL"
+                # give the path to the shell
+        fi
+        # end of if
+        echo "Public IP(v4): $(curl -s --max-time 10 https://v4.ident.me) ($(curl -s --max-time 10 ifconfig.io/country_code))"
+        # says the public ipv4
+        if [ "$(curl -s --max-time 10 https://v6.ident.me)" ]; then
+                # if i can connect to v6.ident.me with timeout of 10s
                 echo "Public IP(v6): $(curl -s --max-time 10 https://v6.ident.me) ($(curl -s --max-time 10 iconfig.io/country_code))"
                 # says IPv6 of the user (for now it is impossible)
         else
-        # if cul output is negative (error)
+                # if curl output is negative (error)
                 echo "You probably have an IPv6 but iSH doesn't support it :("
                 # :(
         fi
@@ -53,11 +54,13 @@ if [ "$(uname -r || grep 'ish')" ]; then
         echo
         # add a line
 else    
-# if device isn't iSH
+        # if device isn't iSH
         PKGARCH="$(dpkg --print-architecture)"
         # Set variable PKGARCH to the output of "dpkg --print-architecture" (doesn't work on Arch Linux)
+fi
+
 if [ "$OS" = "Android" ];then         
-# If user's os is Android (Termux)
+        # If user's os is Android (Termux)
         # --- FOR ANDROID (Termux) ---
         ISPNAME="$(getprop gsm.sim.operator.alpha)"
         # set variable ISPNAME to the output of command 'getprop gsm.sim.operator.alpha', it's output is the operator name of the user (getprop is very useful on Termux)
@@ -81,13 +84,13 @@ if [ "$OS" = "Android" ];then
         BONUS1="Mobile ISP : $ISPNAME ($ISPCOUNTRY)"
         # set variable BONUS1 to "Mobile ISP : " and variable ISPNAME and ISPCOUNTRY
 else
-# else :troll:
+        # else :troll:
         # --- FOR ANYTHING ELSE (including cygwin) ---
         FIRST+="$(uname -n)"
         # add to variable FIRST the output of command 'uname -n' (machine name)
 
         case "$OSTYPE" in
-        # if env variable OSTYPE is equal to
+                # if env variable OSTYPE is equal to
                 solaris*) OS="Solaris" ;;
                 # solaris* then set varible OS to "Solaris"
                 darwin*)  OS="Mac OS X" ;;
@@ -107,23 +110,23 @@ else
         esac
         # end of case
         if [ "$OS" = "GNU/Linux" ]; then
-        # if variable OS is equal to GNU/Linux
-                if [ `which yum` ]; then
-                # and if which yum is true (package exist)
+                # if variable OS is equal to GNU/Linux
+                if [ $(which yum 2>/dev/null) ]; then
+                        # and if which yum is true (package exist)
                         OS="Red Hat"
                         # set variable OS to Red Hat
-                elif [ `which apt` ]; then
-                # or if which apt is true (package exist)
+                elif [ $(which apt 2>/dev/null) ]; then
+                        # or if which apt is true (package exist)
                         source /etc/os-release
                         # take variables from /etc/os-release
                         OS="$PRETTY_NAME"
                         # set variable OS to PRETTY_NAME
-                elif [ `which apk` ]; then
-                # or if which apk is positive (package exists)
+                elif [ $(which apk 2>/dev/null) ]; then
+                        # or if which apk is positive (package exists)
                         OS="Alpine Linux"
                         # set variable OS to "Alpine Linux"
                 else
-                # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
+                        # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
                         Aba="dakor"
                         # random bullshit
                 fi
@@ -143,24 +146,24 @@ THIRD="Package Arch: $PKGARCH"
 FOURTH="Shell:"
 # set variable FOURTH to "Shell:"
 if [ $(echo $SHELL || grep "zsh") ]; then
-# if env var SHELL contains "zsh"
+        # if env var SHELL contains "zsh"
         SH="$(zsh --version | grep -o 'zsh [0-9]\.[0-9]\.[0-9]')"
         # set SH variable to output of "zsh --version" (modified using grep)
         FOURTH+=" $SH"
         # add to variable FOURTH variable SH
 elif [ $(echo $SHELL || grep "bash") ]; then
-# or if env var contains bash
+        # or if env var contains bash
         SH="$(bash --version | head -1 | cut -d ' ' -f 4)"
         # set SH variable to output of "bash --version" (modified using head and cut)
         # https://askubuntu.com/a/1008422
         FOURTH+=" bash $SH"
         # add to variable FOURTH "bash" and variable SH
 elif [ $(echo $SHELL || grep "/bin/sh") ]; then
-# or if env var contains /bin/sh
+        # or if env var contains /bin/sh
         FOURTH+=" sh"
         # add to variable FOURTH "sh"
 else
-# No.
+        # No.
         FOURTH+=" $SHELL"
         # add to variable FOURTH the variable SHELL
 fi
@@ -173,7 +176,7 @@ FIFTH+=" ($(curl -s --max-time 10 ifconfig.io/country_code))"
 # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 
 if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
-# if i can connect to v6.ident.me with 10s of timeout
+        # if i can connect to v6.ident.me with 10s of timeout
         FIFTH+="\nPublic IP(v6): $(curl -s --max-time 10 https://v6.ident.me/) ($(curl -s --max-time 10 ifconfig.io/country_code))"
         # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
