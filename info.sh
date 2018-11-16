@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.13-04 (public)
+# Actual release :      2018.11.16-02 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -53,10 +53,6 @@ if [ $(uname -r | grep "ish") ]; then
 
     echo
     # add a line
-else    
-    # if device isn't iSH
-    PKGARCH="$(dpkg --print-architecture)"
-    # Set variable PKGARCH to the output of "dpkg --print-architecture" (doesn't work on Arch Linux)
 fi
 # end of iSH detection
 
@@ -114,7 +110,8 @@ else
         # if variable OS is equal to GNU/Linux
         if [ $(which yum 2>/dev/null) ]; then
             # and if which yum is true (package exist)
-            OS="Red Hat"
+            source /etc/os-release
+	    OS="$PRETTY_NAME"
             # set variable OS to Red Hat
         elif [ $(which apt 2>/dev/null) ]; then
             # or if which apt is true (package exist)
@@ -141,7 +138,7 @@ else
 fi
 # end of if
 
-THIRD="Package Arch: $PKGARCH"
+THIRD="Arch: $(uname -m)"
 # set variable THIRD to variable PKGARCH
 
 FOURTH="Shell:"
