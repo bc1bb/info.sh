@@ -101,14 +101,13 @@ Report any errors here :
 https://github.com/jusdepatate/info.sh  
 ```
 
-From Windows
+From Windows 10
 ```
 jusdepatate@DESKTOP-GKG4PAL
-Microsoft Windows 10 (Windows NT 10.0)
+Microsoft Windows 10 (Windows_NT 10.0)
 Arch: AMD64
 CMD: cmd.exe
 Public IP(v4): REDACTED (FR)
-Public IP(v6): REDACTED (FR)
 Local IP: 192.168.0.18
 
 Report any errors here :
