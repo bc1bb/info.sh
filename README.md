@@ -18,7 +18,8 @@ Neofetch (local IP idea is from it), DoomQuakeKeen, Dryusdan, Outout and Oräkle
 ### Partially works
 - Arch Linux (thanks to oräkle)
 ### Shows nothing
-...
+- Windows 10 (using cygwin)
+- Windows below 7 (using https://github.com/jusdepatate/info.sh/blob/master/info.bat)
 
 ## Features
 - Shows IP (public and local)
