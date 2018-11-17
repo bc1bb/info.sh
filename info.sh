@@ -22,7 +22,9 @@ BONUS1=""
 if [ $(uname -r | grep "ish") ]; then
     echo "$USER@$HOSTNAME"
     # user@machine name
-    echo "iOS/Alpine Linux $OS $KERNEL"
+    source /etc/os-release
+    # get vars from /etc/os-release
+    echo "iOS/$PRETTY_NAME ($OS $KERNEL)"
     # says the kernel name (Linux) and version
     echo "Arch: $(uname -m)"
     # says the arch of iSH
@@ -31,7 +33,7 @@ if [ $(uname -r | grep "ish") ]; then
         echo "Shell: ash"
         # ...
     else
-        # if SHELL isn't ash
+        # if SHELL isn't ash (as I know, for now it's impossible to use bash nor zsh on iSH)
         echo "Shell: $SHELL"
         # give the path to the shell
     fi
