@@ -188,7 +188,7 @@ fi
 SIXTH="Local IP: "
 # set variable SIXTH to "Local IP: "
 
-if [ "$(hostname -I)" ]; then
+if [ "$(hostname -I 2>/dev/null)" ]; then
         SIXTH+="$(hostname -I)"
 elif [ "$(which ifconfig 2>/dev/null)" ]; then
         SIXTH+="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
