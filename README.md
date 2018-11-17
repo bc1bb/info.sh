@@ -34,11 +34,11 @@ Neofetch (local IP idea is from it), DoomQuakeKeen, Dryusdan, Outout and Oräkle
 - [~~Compatibility with iSH~~](https://github.com/jusdepatate/info.sh/commit/f3bbc05b6e4225d06757b54f31ecff7ef60b2448)
 - [~~.bat version~~](https://github.com/jusdepatate/info.sh/commit/429e13447603005a4631155ed11b436d3561e29e)
 - [~~Compatibility with \*BSD~~](https://github.com/jusdepatate/info.sh/commit/df4f9159a4f8e85af494e8216d3ae0124b9e7ab1)
+- [~~Compatibility with Arch Linux~~](https://github.com/jusdepatate/info.sh/commit/40539e49c42bcd44eefa9ce71ae2fb89e53cfd73)
 ---
 - Compatibility with Gentoo
 - Compatibility with Mac OS
 - Compatibility with Zorin OS
-- Compatibility with Arch
 
 ## Example :
 check example.md for examples :)
