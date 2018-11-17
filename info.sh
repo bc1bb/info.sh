@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.17-05 (public)
+# Actual release :      2018.11.17-06 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -127,7 +127,13 @@ else
             # get variables from /etc/os-release
             OS="$PRETTY_NAME"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
-        else
+        elif [ $(which pacman 2>/dev/null) ]; then
+		# or if which pacman is positive (package exists)
+		source /etc/os-release
+		# get vars from /etc/os-release
+		OS="$PRETTY_NAME"
+		# set variable Os to the variable PRETTY_NAME of /etc/os_release
+    	else
             # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
             Aba="dakor"
             # random bullshit
