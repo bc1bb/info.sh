@@ -2,12 +2,12 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.16-02 (public)
+# Actual release :      2018.11.17-01 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android)
-# but it was tested on Ubuntu, GhostBSD, Termux and iSH.                          
+# but it was tested on Ubuntu, GhostBSD, Termux, iSH and Fedora       
 #                                        
 # License : CC-BY-NC "Jus de Patate, 2018"
 
@@ -94,9 +94,9 @@ else
         # darwin* then set varible OS to "Mac OS X"
         linux*)   OS="GNU/Linux" ;;
         # linux* then set varible OS to "GNU/Linux" (yes, thats how we should call it)
-        bsd*)     OS="BSD" ;;
+        bsd*)     OS="BSD* $(uname -r | grep -o '[0-9]*\.[0-9]')" ;;
         # bsd* then set varible OS to "BSD"
-        FreeBSD)  OS="FreeBSD" ;;
+        *BSD)  OS="*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')" ;;
         # FreeBSD then set varible OS to "FreeBSD"
         msys*)    OS="Windows" ;;
         # msys* then set varible OS to "Windows" (not sure this can happen
@@ -121,8 +121,10 @@ else
             # set variable OS to PRETTY_NAME
         elif [ $(which apk 2>/dev/null) ]; then
             # or if which apk is positive (package exists)
-            OS="Alpine Linux"
-            # set variable OS to "Alpine Linux"
+	    source /etc/os-release
+	    # get variables from /etc/os-release
+            OS="$PRETTY_NAME"
+            # set variable OS to the variable PRETTY_NAME of /etc/os_release
         else
             # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
             Aba="dakor"
@@ -156,6 +158,10 @@ elif [ $(echo $SHELL | grep "bash") ]; then
     # https://askubuntu.com/a/1008422
     FOURTH+=" bash $SH"
     # add to variable FOURTH "bash" and variable SH
+elif [ $(echo $SHELL | grep "csh") ]; then
+    # or if env var contains csh
+    SH="$(csh --version | grep -o 'csh [0-9]*\.[0-9]*\.[0-9]')"
+    FOURTH+=" $SH"
 elif [ $(echo $SHELL | grep "/bin/sh") ]; then
     # or if env var contains /bin/sh
     FOURTH+=" sh"
@@ -182,10 +188,17 @@ fi
 SIXTH="Local IP: "
 # set variable SIXTH to "Local IP: "
 
-# Tested on Debian 9.5 and 9.6 and Termux
-SIXTH+="$(ip route get 1 | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -n 2 | grep -o "2:[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*")"
-# THAT FUCKIN' AWFUL CODE JUST FOR A FUCKIN' LOCAL IP
-
+# About local IP: 
+# The joke is that on Fedora there is no ifconfig command and on *BSD there is no ip command...
+if [ "$(which ip 2>/dev/null)" ]; then
+	# Tested on Debian 9.5 and 9.6 and Termux
+	SIXTH+="$(ip route get 1 | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -n 2 | grep -o "2:[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*")"
+	# THAT FUCKIN' AWFUL CODE JUST FOR A FUCKIN' LOCAL IP
+elif [ "$(which ifconfig 2>/dev/null)" ]; then
+	SIXTH+="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
+else
+	SIXTH+="Unable to get local IP"
+fi
 # --- ECHO ---
 
 echo $FIRST
