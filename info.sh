@@ -175,12 +175,16 @@ else
 fi
 
 FIFTH="Public IP(v4): "
-# set variable FIFTH "Public IP(v4): "
-FIFTH+=" $(curl -s --max-time 10 https://v4.ident.me)"
-# connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
-FIFTH+=" ($(curl -s --max-time 10 ifconfig.io/country_code))"
-# connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 
+if [ "$(curl -s --max-time 10 https://v4.ident.me)" ]; then
+                # set variable FIFTH "Public IP(v4): "
+                FIFTH+=" $(curl -s --max-time 10 https://v4.ident.me)"
+                # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
+                FIFTH+=" ($(curl -s --max-time 10 ifconfig.io/country_code))"
+                # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
+else
+                        FIFTH=" Unable to connect to v4.ident.me (?)"
+fi
 if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
     # if i can connect to v6.ident.me with 10s of timeout
     FIFTH+="\nPublic IP(v6): $(curl -s --max-time 10 https://v6.ident.me/) ($(curl -s --max-time 10 ifconfig.io/country_code))"
