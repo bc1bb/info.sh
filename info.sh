@@ -7,17 +7,17 @@
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android)
-# but it was tested on Ubuntu, GhostBSD, Termux, iSH and Fedora       
-#                                        
+# but it was tested on Ubuntu, GhostBSD, Termux, iSH and Fedora
+#
 # License : CC-BY-NC "Jus de Patate, 2018"
 
-KERNELNAME="$(uname -s)"                 
-OS="$(uname -o)"                         
-KERNEL="$(uname -r)"                     
-USER="$(whoami)"                         
+KERNELNAME="$(uname -s)"
+OS="$(uname -o)"
+KERNEL="$(uname -r)"
+USER="$(whoami)"
 HOSTNAME="$(hostname)"
-FIRST="$USER@"                           
-BONUS1=""                                
+FIRST="$USER@"
+BONUS1=""
 
 if [ $(uname -r | grep "ish") ]; then
     echo "$USER@$HOSTNAME"
@@ -48,7 +48,7 @@ if [ $(uname -r | grep "ish") ]; then
         # :(
     fi
     # end of if
-    echo "Due to limitation of iSH, this script can't show local ip"           
+    echo "Due to limitation of iSH, this script can't show local ip"
     # :(
 
     echo
@@ -56,7 +56,7 @@ if [ $(uname -r | grep "ish") ]; then
 fi
 # end of iSH detection
 
-if [ "$OS" = "Android" ];then         
+if [ "$OS" = "Android" ];then
     # If user's os is Android (Termux)
     # --- FOR ANDROID (Termux) ---
     ISPNAME="$(getprop gsm.sim.operator.alpha)"
@@ -111,7 +111,7 @@ else
         if [ $(which yum 2>/dev/null) ]; then
             # and if which yum is true (package exist)
             source /etc/os-release
-	    OS="$PRETTY_NAME"
+            OS="$PRETTY_NAME"
             # set variable OS to Red Hat
         elif [ $(which apt 2>/dev/null) ]; then
             # or if which apt is true (package exist)
@@ -121,8 +121,8 @@ else
             # set variable OS to PRETTY_NAME
         elif [ $(which apk 2>/dev/null) ]; then
             # or if which apk is positive (package exists)
-	    source /etc/os-release
-	    # get variables from /etc/os-release
+            source /etc/os-release
+            # get variables from /etc/os-release
             OS="$PRETTY_NAME"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
         else
@@ -188,16 +188,12 @@ fi
 SIXTH="Local IP: "
 # set variable SIXTH to "Local IP: "
 
-# About local IP: 
-# The joke is that on Fedora there is no ifconfig command and on *BSD there is no ip command...
-if [ "$(which ip 2>/dev/null)" ]; then
-	# Tested on Debian 9.5 and 9.6 and Termux
-	SIXTH+="$(ip route get 1 | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -n 2 | grep -o "2:[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*")"
-	# THAT FUCKIN' AWFUL CODE JUST FOR A FUCKIN' LOCAL IP
+if [ "$(hostname -I)" ]; then
+        SIXTH+="$(hostname -I)"
 elif [ "$(which ifconfig 2>/dev/null)" ]; then
-	SIXTH+="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
+        SIXTH+="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
 else
-	SIXTH+="Unable to get local IP"
+        SIXTH+="Unable to get local IP"
 fi
 # --- ECHO ---
 
