@@ -39,7 +39,6 @@ Neofetch (local IP idea is from it), DoomQuakeKeen, Dryusdan, Outout and Oräkle
 ---
 - Compatibility with Gentoo
 - Compatibility with Mac OS
-- Compatibility with Zorin OS
 
 ## Example :
 check example.md for examples :)
