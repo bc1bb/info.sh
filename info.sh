@@ -12,7 +12,7 @@
 # License : CC-BY-NC "Jus de Patate, 2018"
 
 if [ "$1" = "--update" ]; then
-                curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -s --max-time 10 -LO
+    curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -s --max-time 10 -LO
 fi
 
 KERNELNAME="$(uname -s)"
@@ -140,11 +140,11 @@ else
             OS="\e[1m$PRETTY_NAME\e[0m"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
         elif [ $(which pacman 2>/dev/null) ]; then
-                # or if which pacman is positive (package exists)
-                source /etc/os-release
-                # get vars from /etc/os-release
-                OS="\e[1m$PRETTY_NAME\e[0m"
-                # set variable Os to the variable PRETTY_NAME of /etc/os_release
+            # or if which pacman is positive (package exists)
+            source /etc/os-release
+            # get vars from /etc/os-release
+            OS="\e[1m$PRETTY_NAME\e[0m"
+            # set variable Os to the variable PRETTY_NAME of /etc/os_release
         else
             # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
             Aba="dakor"
@@ -195,13 +195,13 @@ fi
 FIFTH="Public IP(v4): "
 
 if [ "$(curl -s --max-time 10 https://v4.ident.me)" ]; then
-                # set variable FIFTH "Public IP(v4): "
-                FIFTH+=" \e[1m$(curl -s --max-time 10 https://v4.ident.me)\e[0m"
-                # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
-                FIFTH+=" (\e[1m$(curl -s --max-time 10 ifconfig.io/country_code)\e[0m)"
-                # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
+    # set variable FIFTH "Public IP(v4): "
+    FIFTH+=" \e[1m$(curl -s --max-time 10 https://v4.ident.me)\e[0m"
+    # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
+    FIFTH+=" (\e[1m$(curl -s --max-time 10 ifconfig.io/country_code)\e[0m)"
+    # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 else
-                        FIFTH=" Unable to connect to v4.ident.me (?)"
+    FIFTH=" Unable to connect to v4.ident.me (?)"
 fi
 if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
     # if i can connect to v6.ident.me with 10s of timeout
@@ -213,11 +213,11 @@ SIXTH="Local IP: "
 # set variable SIXTH to "Local IP: "
 
 if [ "$(hostname -I 2>/dev/null)" ]; then
-        SIXTH+="\e[1m$(hostname -I)\e[0m"
+    SIXTH+="\e[1m$(hostname -I)\e[0m"
 elif [ "$(which ifconfig 2>/dev/null)" ]; then
-        SIXTH+="\e[1m$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')\e[0m"
+    SIXTH+="\e[1m$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')\e[0m"
 else
-        SIXTH+="Unable to get local IP"
+    SIXTH+="Unable to get local IP"
 fi
 # --- ECHO ---
 
