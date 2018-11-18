@@ -19,6 +19,14 @@ HOSTNAME="$(hostname)"
 FIRST="$USER@"
 BONUS1=""
 
+banner() {
+    msg="# $* #"
+    edge=$(echo "$msg" | sed 's/./#/g')
+    echo "$edge"
+    echo "$msg"
+    echo "$edge"
+}
+
 if [ $(uname -r | grep "ish") ]; then
     echo "$USER@$HOSTNAME"
     # user@machine name
@@ -128,12 +136,12 @@ else
             OS="$PRETTY_NAME"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
         elif [ $(which pacman 2>/dev/null) ]; then
-		# or if which pacman is positive (package exists)
-		source /etc/os-release
-		# get vars from /etc/os-release
-		OS="$PRETTY_NAME"
-		# set variable Os to the variable PRETTY_NAME of /etc/os_release
-    	else
+                # or if which pacman is positive (package exists)
+                source /etc/os-release
+                # get vars from /etc/os-release
+                OS="$PRETTY_NAME"
+                # set variable Os to the variable PRETTY_NAME of /etc/os_release
+        else
             # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
             Aba="dakor"
             # random bullshit
@@ -208,6 +216,10 @@ else
         SIXTH+="Unable to get local IP"
 fi
 # --- ECHO ---
+
+banner $(date "+%A %d %B, %Y")
+
+echo
 
 echo $FIRST
 # do I really need to explain 'echo' ?
