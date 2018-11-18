@@ -2,8 +2,29 @@
 
 <a href="https://github.com/jusdepatate/info.sh/blob/master/info.sh"><i>info.sh</i></a> is a little script that works like `screenfetch` or `neofetch` it shows infos and was originally made for Termux (Linux on Android).
 
-#### Thanks to:
+#### Thanks to
 Neofetch (local IP idea is from it), DoomQuakeKeen, Dryusdan, Outout and Oräkle
+
+## Install
+#### Unix
+- Using git
+
+`git clone https://github.com/jusdepatate/info.sh/ && cd info.sh/ && chmod +x info.sh && bash info.sh`
+
+Update using `bash info.sh --update`
+
+- Using curl
+
+`curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -s | bash`
+
+Download file : `curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -LO`
+
+Update using `bash info.sh --update`
+
+#### Windows
+- Using git
+
+`git clone https://github.com/jusdepatate/info.sh/ && cd info.sh/ && info.bat`
 
 ## Works on
 - Ubuntu (tested with official Ubuntu and WSL)
