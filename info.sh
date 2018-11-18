@@ -215,7 +215,7 @@ SIXTH="Local IP: "
 if [ "$(hostname -I 2>/dev/null)" ]; then
         SIXTH+="\e[1m$(hostname -I)\e[0m"
 elif [ "$(which ifconfig 2>/dev/null)" ]; then
-        SIXTH+=\e[1m"$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')\e[0m"
+        SIXTH+="\e[1m$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')\e[0m"
 else
         SIXTH+="Unable to get local IP"
 fi
