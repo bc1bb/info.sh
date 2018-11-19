@@ -44,10 +44,11 @@ Update using `bash info.sh --update`
 - Windows below 7 (using https://github.com/jusdepatate/info.sh/blob/master/info.bat)
 
 ## Features
-- Shows IP (public and local)
+- Shows IP (public, v4 and v6, and local)
 - Shows OS and version (only on Ubuntu and Android)
 - Shows username and hostname
 - Shows Mobile ISP (only on Termux)
+- Shows ISP and ASN
 - Bad code
 
 ### Planned
