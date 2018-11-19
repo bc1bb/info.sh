@@ -20,7 +20,7 @@ OS="$(uname -o)"
 KERNEL="$(uname -r)"
 USER="$(whoami)"
 HOSTNAME="$(hostname)"
-FIRST="$USER@"
+FIRST="\e[1m$USER\e[0m@\e[1m"
 BONUS1=""
 
 banner() {
@@ -80,7 +80,7 @@ if [ "$OS" = "Android" ];then
     ANDVERSION="$(getprop ro.build.version.release)"
     # set variable ANDVERSION to the output of command 'uname -r', it's output is the version of Android
 
-    FIRST+="\e[1m$(getprop ro.product.manufacturer)"
+    FIRST+="$(getprop ro.product.manufacturer)"
     # add to the variable FIRST (first line of output) the output of command 'getprop ro.product.manufacturer', it's output is the user's phone manufacturer (Huawei, Samsung, ...)
     FIRST+=" $(getprop ro.product.model)\e[0m"
     # add to the variable FIRST (''                  ) the output of command 'getprop ro.product.model', it's output is the user's phone model
@@ -97,7 +97,7 @@ if [ "$OS" = "Android" ];then
 else
     # else :troll:
     # --- FOR ANYTHING ELSE (including cygwin) ---
-    FIRST+="\e[1m$HOSTNAME\e[0m"
+    FIRST+="$HOSTNAME\e[0m"
     # add to variable FIRST the output of command 'hostname' (machine name)
 
     case "$OSTYPE" in
@@ -198,14 +198,14 @@ if [ "$(curl -s --max-time 10 https://v4.ident.me)" ]; then
     # set variable FIFTH "Public IP(v4): "
     FIFTH+=" \e[1m$(curl -s --max-time 10 https://v4.ident.me)\e[0m"
     # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
-    FIFTH+=" (\e[1m$(curl -s --max-time 10 ifconfig.io/country_code)\e[0m)"
+	FIFTH+=" (\e[1m$(curl -s --max-time 10 ifconfig.io/country_code) - $(curl -s --max-time 10 ipinfo.io/org | awk '{print $1}') - $(curl -s --max-time 10 ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
     # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 else
     FIFTH=" Unable to connect to v4.ident.me (?)"
 fi
 if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
     # if i can connect to v6.ident.me with 10s of timeout
-    FIFTH+="\nPublic IP(v6): \e[1m$(curl -s --max-time 10 https://v6.ident.me/)\e[0m (\e[1m$(curl -s --max-time 10 ifconfig.io/country_code)\e[0m)"
+    FIFTH+="\nPublic IP(v6): \e[1m$(curl -s --max-time 10 https://v6.ident.me/)\e[0m (\e[1m$(curl -s --max-time 10 ifconfig.io/country_code) - $(curl -s --max-time 10 ipinfo.io/org | awk '{print $1}') - $(curl -s --max-time 10 ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
 
