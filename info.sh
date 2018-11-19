@@ -250,3 +250,5 @@ echo -e $BONUS1
 echo
 echo "Report any errors here :"
 echo "https://github.com/jusdepatate/info.sh"
+
+# vim: ft=sh ts=4 sw=4
