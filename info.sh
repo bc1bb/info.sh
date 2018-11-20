@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01 (private)
-# Actual release :      2018.11.19-02 (public)
+# Actual release :      2018.11.20-02 (public)
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -145,7 +145,12 @@ else
             # get vars from /etc/os-release
             OS="\e[1m$PRETTY_NAME\e[0m"
             # set variable Os to the variable PRETTY_NAME of /etc/os_release
-        else
+        elif [ $(which cards 2>/dev/null) ]; then
+			# or if which cards is positive (package exists)
+			source /etc/lsb-release
+			# get vars from /etc/lsb-release
+			OS="\e[1m$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)\e[0m"
+		else
             # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
             Aba="dakor"
             # random bullshit

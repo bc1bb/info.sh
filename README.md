@@ -6,7 +6,14 @@
 Neofetch (local IP idea is from it), DoomQuakeKeen, Dryusdan, Outout, Oräkle and Leeo97one.
 
 ## Install
-#### Unix
+
+#### Linux, \*BSD, ...
+##### Package you need
+- curl (or wget, check info.sh)
+- awk (package name is sometimes gawk), cut, head and grep
+- bash
+
+##### Install
 - Using git
 
 `git clone https://github.com/jusdepatate/info.sh/ && cd info.sh/ && bash info.sh`
@@ -22,6 +29,11 @@ Download file : `curl "https://raw.githubusercontent.com/jusdepatate/info.sh/mas
 Update using `bash info.sh --update`
 
 #### Windows
+##### Package you need
+- Powershell (built-in with Windows 7 and better)
+
+#### Install
+
 - Using git
 
 `git clone https://github.com/jusdepatate/info.sh/ && cd info.sh/ && info.bat`
@@ -35,6 +47,7 @@ Update using `bash info.sh --update`
 - Fedora
 - \*BSD
 - Arch Linux
+- NuTyX
 
 ## Doesn't works on
 ### Partially works
@@ -63,7 +76,7 @@ Update using `bash info.sh --update`
 - Compatibility with Mac OS
 
 ## Example :
-check example.md for examples :)
+check folder `screenshot`
 
 Pull requests and issues are welcome :)<br>
 <img width="80px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/By-nc.svg/2560px-By-nc.svg">
