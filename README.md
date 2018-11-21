@@ -58,11 +58,11 @@ Update using `bash info.sh --update`
 
 ## Features
 - Shows IP (public, v4 and v6, and local)
-- Shows OS and version (only on Ubuntu and Android)
-- Shows username and hostname
+- Shows OS and version
+- Shows username and hostname (or phone manufacturer + phone model on Termux)
 - Shows Mobile ISP (only on Termux)
 - Shows ISP and ASN
-- Bad code
+- Ultra bad code
 
 ### Planned
 - [~~Show IPv4 and IPv6 on two different line~~](https://github.com/jusdepatate/info.sh/commit/c2a929935705e8647f2cce32a9d5e4fc54d026a6)
@@ -74,6 +74,9 @@ Update using `bash info.sh --update`
 ---
 - Compatibility with Gentoo
 - Compatibility with Mac OS
+- Test if curl is here, if not present, use wget.
+- Add success messages after update and don't execute the old code
+- Add a <code>--version</code> argument
 
 ## Example :
 check folder `screenshot`
