@@ -22,7 +22,7 @@ fi
 
 if [ "$1" = "--update" ]; then
     curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -s --max-time 10 -LO
-	echo -e "Update done,\n$(./info.sh --version) was downloaded"
+	echo -e "Update done,\n$(./info.sh -v) was downloaded"
 	exit
 elif [ "$1" = "-v" ]; then
 	echo "info.sh $VERSION"
