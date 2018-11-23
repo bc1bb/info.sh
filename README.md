@@ -66,7 +66,7 @@ Update using `bash info.sh --update`
 
 ### Planned
 - [~~Show IPv4 and IPv6 on two different line~~](https://github.com/jusdepatate/info.sh/commit/c2a929935705e8647f2cce32a9d5e4fc54d026a6)
-- [~~Explain every line~~](https://github.com/jusdepatate/info.sh/commit/f45db7cf90e5f412541e4a05098dfabed694d5d0)
+- [~~Explain every line~~](https://github.com/jusdepatate/info.sh/commit/f45db7cf90e5f412541e4a05098dfabed694d5d0) [2](https://github.com/jusdepatate/info.sh/commit/3f146f235e72d52c1a30fa86bc43c73ef3b6a2d6)
 - [~~Compatibility with iSH~~](https://github.com/jusdepatate/info.sh/commit/f3bbc05b6e4225d06757b54f31ecff7ef60b2448)
 - [~~.bat version~~](https://github.com/jusdepatate/info.sh/commit/429e13447603005a4631155ed11b436d3561e29e)
 - [~~Compatibility with \*BSD~~](https://github.com/jusdepatate/info.sh/commit/df4f9159a4f8e85af494e8216d3ae0124b9e7ab1)
