@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.22-02"
+               VERSION="2018.11.23-02"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -228,7 +228,7 @@ fi
 
 FIFTH="Public IP(v4): "
 
-if [ "$(curl -s --max-time 10 https://v4.ident.me)" ]; then
+if [ "$($REQMNGR https://v4.ident.me)" ]; then
     # set variable FIFTH "Public IP(v4): "
     FIFTH+=" \e[1m$($REQMNGR https://v4.ident.me)\e[0m"
     # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
@@ -237,7 +237,7 @@ if [ "$(curl -s --max-time 10 https://v4.ident.me)" ]; then
 else
     FIFTH=" Unable to connect to v4.ident.me (?)"
 fi
-if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
+if [ "$($REQMNGR https://v6.ident.me/)" ]; then
     # if i can connect to v6.ident.me with 10s of timeout (it means that user has an IPv6)
     FIFTH+="\nPublic IP(v6): \e[1m$($REQMNGR https://v6.ident.me/)\e[0m (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
