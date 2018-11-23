@@ -71,7 +71,7 @@ Update using `bash info.sh --update`
 - [~~.bat version~~](https://github.com/jusdepatate/info.sh/commit/429e13447603005a4631155ed11b436d3561e29e)
 - [~~Compatibility with \*BSD~~](https://github.com/jusdepatate/info.sh/commit/df4f9159a4f8e85af494e8216d3ae0124b9e7ab1)
 - [~~Compatibility with Arch Linux~~](https://github.com/jusdepatate/info.sh/commit/40539e49c42bcd44eefa9ce71ae2fb89e53cfd73)
-- [~~Test if curl is here, if not present, use wget.~~](https://github.com/jusdepatate/info.sh/commit/f3c73c9e1414253f8dd1dee4871184b804cfb49a)
+- [~~Test if curl is here, if not present, use wget.~~](https://github.com/jusdepatate/info.sh/commit/f3c73c9e1414253f8dd1dee4871184b804cfb49a) [2](https://github.com/jusdepatate/info.sh/commit/0b3bb3e68c767872a8289fb3d4e4f9abae7fd23c)
 - [~~Add success messages after update and don't execute the old code~~](https://github.com/jusdepatate/info.sh/commit/f3c73c9e1414253f8dd1dee4871184b804cfb49a)
 - [~~Add a <code>-v</code> argument~~](https://github.com/jusdepatate/info.sh/commit/f3c73c9e1414253f8dd1dee4871184b804cfb49a)
 ---
