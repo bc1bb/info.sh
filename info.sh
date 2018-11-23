@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.23-02"
+               VERSION="2018.11.23-03"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -13,34 +13,34 @@
 
 if [ "$(which curl 2>/dev/null)" ]; then
 # if curl is installed, then
-	REQMNGR="curl -s --max-time 10"
+	REQMNGR="curl -s --max-time 10 -LO"
 	# use curl as request manager
 elif [ "$(which wget 2>/dev/null)" ];then
 # if wget is installed, then
-	REQMNGR="wget -qO-"
+	REQMNGR="wget -q --timeout=10"
 	# use wget as request manager
 else
 # if curl and wget aren't installed, then
 	echo "Please install curl or wget"
 	# error message
-	exit
-	# stop program
+	exit 1
+	# stop program (with an error)
 fi
 # end of if
 
 if [ "$1" = "--update" ]; then
 # if user wants to update
-    curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -s --max-time 10 -LO
+    $REQMNGR "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh"
     # download new version
-    echo -e "Update done,\n$(chmod +x info.sh &>/dev/null && bash info.sh -v) was downloaded"
+    echo -e "Update done,\n$(chmod +x info.sh &>/dev/null && ./info.sh -v) was downloaded"
     # output new version
-    exit
+    exit 0
     # stop program
 elif [ "$1" = "-v" ]; then
 # if user wants to see version installed
 	echo "info.sh $VERSION"
 	# output version
-	exit
+	exit 0
 	# stop program
 fi
 # end of argument detection
