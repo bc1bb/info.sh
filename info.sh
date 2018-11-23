@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.23-04"
+               VERSION="2018.11.23-05"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -12,16 +12,16 @@
 # License : CC-BY-NC "Jus de Patate, 2018"
 
 if [ "$(which curl 2>/dev/null)" ]; then
-# if curl is installed, then
+    # if curl is installed, then
 	REQMNGR="curl -s --max-time 10"
 	# use curl as request manager
-	DL="curl -s --max-time 10 -LO"
+    DWNMNGR="curl -s --max-time 10 -LO"
 	# use curl to download update
-elif [ "$(which wget 2>/dev/null)" ];then
-# if wget is installed, then
-	REQMNGR="wget -qO- --timeout=10"
+elif [ "$(which wget 2>/dev/null)" ]; then
+    # if wget is installed, then
+	REQMNGR="wget -q --timeout=10"
 	# use wget as request manager
-	DL="wget -q --timeout=10"
+	DWNMNGR="wget -q --timeout=10"
 	# use wget to download update
 else
 # if curl and wget aren't installed, then
@@ -34,7 +34,7 @@ fi
 
 if [ "$1" = "--update" ]; then
 # if user wants to update
-    $DL "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh"
+    $DWNMNGR "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh"
     # download new version
     echo -e "Update done,\n$(chmod +x info.sh &>/dev/null && bash info.sh -v) was downloaded"
     # output new version
@@ -290,4 +290,4 @@ echo
 echo "Report any errors here :"
 echo "https://github.com/jusdepatate/info.sh"
 
-# vim: ft=sh ts=4 sw=4
+# vim: ft=sh ts=4 sw=4 sts=4
