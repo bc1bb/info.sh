@@ -12,22 +12,38 @@
 # License : CC-BY-NC "Jus de Patate, 2018"
 
 if [ "$(which curl 2>/dev/null)" ]; then
+# if curl is installed, then
 	REQMNGR="curl -s --max-time 10"
+	# use curl as request manager
 elif [ "$(which wget 2>/dev/null)" ];then
+# if wget is installed, then
 	REQMNGR="wget -qO-"
+	# use wget as request manager
 else
+# if curl and wget aren't installed, then
 	echo "Please install curl or wget"
+	# error message
 	exit
+	# stop program
 fi
+# end of if
 
 if [ "$1" = "--update" ]; then
+# if user wants to update
     curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh" -s --max-time 10 -LO
-	echo -e "Update done,\n$(./info.sh -v) was downloaded"
-	exit
+    # download new version
+    echo -e "Update done,\n$(chmod +x info.sh &>/dev/null && bash info.sh -v) was downloaded"
+    # output new version
+    exit
+    # stop program
 elif [ "$1" = "-v" ]; then
+# if user wants to see version installed
 	echo "info.sh $VERSION"
+	# output version
 	exit
+	# stop program
 fi
+# end of argument detection
 
 KERNELNAME="$(uname -s)"
 OS="$(uname -o)"
@@ -36,6 +52,7 @@ USER="$(whoami)"
 HOSTNAME="$(hostname)"
 FIRST="\e[1m$USER\e[0m@\e[1m"
 BONUS1=""
+# set up basic variables
 
 banner() {
     msg="# $* #"
@@ -44,6 +61,7 @@ banner() {
     echo "$msg"
     echo "$edge"
 }
+# https://unix.stackexchange.com/a/250094
 
 if [ $(uname -r | grep "ish") ]; then
     echo -e "$USER@$HOSTNAME"
@@ -97,7 +115,7 @@ if [ "$OS" = "Android" ];then
     FIRST+="$(getprop ro.product.manufacturer)"
     # add to the variable FIRST (first line of output) the output of command 'getprop ro.product.manufacturer', it's output is the user's phone manufacturer (Huawei, Samsung, ...)
     FIRST+=" $(getprop ro.product.model)\e[0m"
-    # add to the variable FIRST (''                  ) the output of command 'getprop ro.product.model', it's output is the user's phone model
+    # add to the variable FIRST the output of command 'getprop ro.product.model', it's output is the user's phone model
 
     SECOND="\e[1m$OS"
     # set variable SECOND (second line of output) to the output of variable OS (Android in every case in this if)
@@ -121,11 +139,11 @@ else
         darwin*)  OS="\e[1mMac OS X\e[0m" ;;
         # darwin* then set varible OS to "Mac OS X"
         linux*)   OS="\e[1mGNU/Linux\e[0m" ;;
-        # linux* then set varible OS to "GNU/Linux" (yes, thats how we should call it)
+        # linux* then set varible OS to "GNU/Linux"
         bsd*)     OS="\e[1mBSD* $(uname -r | grep -o '[0-9]*\.[0-9]')\e[0m" ;;
-        # bsd* then set varible OS to "BSD"
-        *BSD)  OS="\e[1m*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')\e[0m" ;;
-        # FreeBSD then set varible OS to "FreeBSD"
+        # bsd* then set varible OS to "BSD*" and version
+        *bsd)  OS="\e[1m*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')\e[0m" ;;
+        # FreeBSD then set varible OS to "*BSD" and version
         msys*)    OS="\e[1mWindows\e[0m" ;;
         # msys* then set varible OS to "Windows" (not sure this can happen
         cygwin*)  OS="\e[1mWindows\e[0m" ;;
@@ -133,14 +151,15 @@ else
         *)        OS="\e[1m$OSTYPE\e[0m" ;;
         # anything else then set varible OS to env var OSTYPE
     esac
+    # https://stackoverflow.com/a/18434831
     # end of case
     if [ "$OS" = "\e[1mGNU/Linux\e[0m" ]; then
-        # if variable OS is equal to GNU/Linux
+        # if variable OS is equal to GNU/Linux (+ formatting
         if [ $(which yum 2>/dev/null) ]; then
             # and if which yum is true (package exist)
             source /etc/os-release
             OS="\e[1m$PRETTY_NAME\e[0m"
-            # set variable OS to Red Hat
+            # set variable OS to PRETTY_NAME
         elif [ $(which apt 2>/dev/null) ]; then
             # or if which apt is true (package exist)
             source /etc/os-release
@@ -164,10 +183,6 @@ else
 			source /etc/lsb-release
 			# get vars from /etc/lsb-release
 			OS="\e[1m$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)\e[0m"
-		else
-            # NO ! I WON´T DO THIS JOKE TWO TIMES IN ONE FILE
-            Aba="dakor"
-            # random bullshit
         fi
         # end of if
     fi
@@ -180,7 +195,7 @@ fi
 # end of if
 
 THIRD="Arch: \e[1m$(uname -m)\e[0m"
-# set variable THIRD to variable PKGARCH
+# set variable THIRD to architecture (using uname)
 
 FOURTH="Shell:"
 # set variable FOURTH to "Shell:"
@@ -206,7 +221,7 @@ elif [ $(echo $SHELL | grep "/bin/sh") ]; then
     FOURTH+=" \e[1msh\e[0m"
     # add to variable FOURTH "sh"
 else
-    # No.
+    # if shell isn't one listed above
     FOURTH+=" $SHELL"
     # add to variable FOURTH the variable SHELL
 fi
@@ -223,7 +238,7 @@ else
     FIFTH=" Unable to connect to v4.ident.me (?)"
 fi
 if [ "$(curl -s --max-time 10 https://v6.ident.me/)" ]; then
-    # if i can connect to v6.ident.me with 10s of timeout
+    # if i can connect to v6.ident.me with 10s of timeout (it means that user has an IPv6)
     FIFTH+="\nPublic IP(v6): \e[1m$($REQMNGR https://v6.ident.me/)\e[0m (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
@@ -241,10 +256,12 @@ fi
 # --- ECHO ---
 
 banner $(date "+%A %d %B, %Y")
+# add a date with the date
 echo
+# new line
 
 echo -e $FIRST
-# do I really need to explain 'echo' ?
+# -e because it supports \n, bold, ...
 # First : user@host (or phone man + phone mod)
 
 echo -e $SECOND
@@ -257,7 +274,6 @@ echo -e $FOURTH
 # Fourth : Shell + version (only for bash and zsh)
 
 echo -e $FIFTH
-# -e because it supports \n (new line)
 # Fifth : Public IP
 
 echo -e $SIXTH
