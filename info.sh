@@ -19,7 +19,7 @@ if [ "$(which curl 2>/dev/null)" ]; then
 	# use curl to download update
 elif [ "$(which wget 2>/dev/null)" ]; then
     # if wget is installed, then
-	REQMNGR="wget -q --timeout=10"
+	REQMNGR="wget -qO- --timeout=10"
 	# use wget as request manager
 	DWNMNGR="wget -q --timeout=10"
 	# use wget to download update
