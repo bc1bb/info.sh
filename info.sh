@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.23-05"
+               VERSION="2018.11.24-03"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -10,6 +10,11 @@
 # but it was tested on Ubuntu, GhostBSD, Termux, iSH and Fedora
 #
 # License : CC-BY-NC "Jus de Patate, 2018"
+#
+# Arguments :
+# --update : update info.sh
+# -v : output version of info.sh
+# --upload : upload output to transfer.sh
 
 if [ "$(which curl 2>/dev/null)" ]; then
     # if curl is installed, then
@@ -17,12 +22,18 @@ if [ "$(which curl 2>/dev/null)" ]; then
 	# use curl as request manager
     DWNMNGR="curl -s --max-time 10 -LO"
 	# use curl to download update
+	UPMNGR="curl --upload-file"
 elif [ "$(which wget 2>/dev/null)" ]; then
     # if wget is installed, then
 	REQMNGR="wget -qO- --timeout=10"
 	# use wget as request manager
 	DWNMNGR="wget -q --timeout=10"
 	# use wget to download update
+	if [ "$1" = "--upload" ]; then
+		echo "wget isn't supported for upload"
+		echo "please install curl"
+		exit 1
+	fi
 else
 # if curl and wget aren't installed, then
 	echo "Please install curl or wget"
@@ -232,18 +243,27 @@ fi
 
 FIFTH="Public IP(v4): "
 
+if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
+	FIFTH="Tor IP(v4): "
+fi
+
 if [ "$($REQMNGR https://v4.ident.me)" ]; then
     # set variable FIFTH "Public IP(v4): "
     FIFTH+=" \e[1m$($REQMNGR https://v4.ident.me)\e[0m"
     # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
-	FIFTH+=" (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
+	FIFTH+=" (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-))\e[0m"
     # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 else
     FIFTH=" Unable to connect to v4.ident.me (?)"
 fi
 if [ "$($REQMNGR https://v6.ident.me/)" ]; then
     # if i can connect to v6.ident.me with 10s of timeout (it means that user has an IPv6)
-    FIFTH+="\nPublic IP(v6): \e[1m$($REQMNGR https://v6.ident.me/)\e[0m (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
+    FIFTH+="\nPublic IP(v6):"
+
+	if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
+		FIFTH="\nTor IP(v6): "
+	fi
+	FIFTH+="\e[1m$($REQMNGR https://v6.ident.me/)\e[0m (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
 
@@ -258,6 +278,13 @@ else
     SIXTH+="Unable to get local IP"
 fi
 # --- ECHO ---
+
+if [ "$1" = "--upload" ]; then
+	echo -e "$(banner $(date '+%A %d %B, %Y'))\n$FIRST\n$SECOND\n$THIRD\n$FOURTH\nPublic IP(vX): Not shown\n$SIXTH\n$BONUS1\n\ninfo.sh $VERSION\nhttps://github.com/jusdepatate/info.sh" > info.sh.log
+	$UPMNGR info.sh.log https://transfer.sh/
+	rm -f info.sh.log
+	exit
+fi
 
 banner $(date "+%A %d %B, %Y")
 # add a date with the date
