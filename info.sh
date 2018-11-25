@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.25-05"
+               VERSION="2018.11.25-06"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -125,9 +125,6 @@ if [ $(uname -r | grep "ish") ]; then
     # end of if
     echo -e "Due to limitation of iSH, this script can't show local ip"
     # :(
-
-    echo
-    # add a line
 else
 # end of iSH detection
 
