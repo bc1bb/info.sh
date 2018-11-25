@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.25-04"
+               VERSION="2018.11.25-05"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -89,29 +89,33 @@ banner() {
 # https://unix.stackexchange.com/a/250094
 
 if [ $(uname -r | grep "ish") ]; then
-    echo -e "$USER@$HOSTNAME"
+    banner $(date "+%A %d %B, %Y")
+    # add a banner with the date
+    echo
+    # new line
+    echo -e "${BOLD}$USER${NORMAL}@${BOLD}$HOSTNAME${NORMAL}"
     # user@machine name
     source /etc/os-release
     # get vars from /etc/os-release
-    echo "iOS/$PRETTY_NAME ($OS $KERNEL)"
+    echo "${BOLD}iOS/$PRETTY_NAME${NORMAL} (${UNDER}$OS $KERNEL${NORMAL})"
     # says the kernel name (Linux) and version
-    echo "Arch: $(uname -m)"
+    echo "Arch: ${BOLD}$(uname -m)${NORMAL}"
     # says the arch of iSH
     if [ "$SHELL" = "/bin/ash" ]; then
         # if SHELL is ash
-        echo "Shell: ash"
+        echo "Shell: ${BOLD}ash${NORMAL}"
         # ...
     else
         # if SHELL isn't ash (as I know, for now it's impossible to use bash nor zsh on iSH)
-        echo "Shell: $SHELL"
+        echo "Shell: ${BOLD}$SHELL${NORMAL}"
         # give the path to the shell
     fi
     # end of if
-    echo "Public IP(v4): $(curl -s --max-time 10 https://v4.ident.me) ($(curl -s --max-time 10 ifconfig.io/country_code))"
+    echo "Public IP(v4): ${BOLD}$(curl -s --max-time 10 https://v4.ident.me)${NORMAL} (${BOLD}$(curl -s --max-time 10 ifconfig.io/country_code)${NORMAL})"
     # says the public ipv4
     if [ "$(curl -s --max-time 10 https://v6.ident.me)" ]; then
         # if i can connect to v6.ident.me with timeout of 10s
-        echo "Public IP(v6): $(curl -s --max-time 10 https://v6.ident.me) ($(curl -s --max-time 10 iconfig.io/country_code))"
+        echo "Public IP(v6): ${BOLD}$(curl -s --max-time 10 https://v6.ident.me)${NORMAL} (${BOLD}$(curl -s --max-time 10 iconfig.io/country_code)${NORMAL})"
         # says IPv6 of the user (for now it is impossible)
     else
         # if curl output is negative (error)
@@ -124,7 +128,7 @@ if [ $(uname -r | grep "ish") ]; then
 
     echo
     # add a line
-fi
+else
 # end of iSH detection
 
 if [ "$OS" = "Android" ];then
@@ -301,7 +305,7 @@ if [ "$1" = "--upload" ]; then
 fi
 
 banner $(date "+%A %d %B, %Y")
-# add a date with the date
+# add a banner with the date
 echo
 # new line
 
@@ -326,6 +330,8 @@ echo -e $SIXTH
 
 echo -e $BONUS1
 # Bonus1 : Mobile ISP (Termux-only)
+
+fi
 
 echo
 echo "Report any errors here :"
