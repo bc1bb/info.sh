@@ -111,11 +111,11 @@ if [ $(uname -r | grep "ish") ]; then
         # give the path to the shell
     fi
     # end of if
-    echo -e "Public IP(v4): ${BOLD}$(curl -s --max-time 10 https://v4.ident.me)${NORMAL} (${BOLD}$(curl -s --max-time 10 ifconfig.io/country_code)${NORMAL})"
+    echo -e "Public IP(v4): ${BOLD}$($REQMNGR https://v4.ident.me)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
     # says the public ipv4
-    if [ "$(curl -s --max-time 10 https://v6.ident.me)" ]; then
+    if [ "$($REQMNGR https://v6.ident.me)" ]; then
         # if i can connect to v6.ident.me with timeout of 10s
-        echo -e "Public IP(v6): ${BOLD}$(curl -s --max-time 10 https://v6.ident.me)${NORMAL} (${BOLD}$(curl -s --max-time 10 iconfig.io/country_code)${NORMAL})"
+        echo -e "Public IP(v6): ${BOLD}$($REQMNGR https://v6.ident.me)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
         # says IPv6 of the user (for now it is impossible)
     else
         # if curl output is negative (error)
