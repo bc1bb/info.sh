@@ -2,12 +2,12 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.24-03"
+               VERSION="2018.11.25-04"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android)
-# but it was tested on Ubuntu, GhostBSD, Termux, iSH and Fedora
+# but it was tested on Ubuntu, GhostBSD, Termux, iSH, macOS and Fedora
 #
 # License : CC-BY-NC "Jus de Patate, 2018"
 #
@@ -15,6 +15,16 @@
 # --update : update info.sh
 # -v : output version of info.sh
 # --upload : upload output to transfer.sh
+
+if [ "$(which tput 2>/dev/null)" ]; then
+    BOLD=$(tput bold)
+    NORMAL=$(tput sgr0)
+    UNDER=$(tput smul)
+else
+    BOLD="\e[1m"
+    NORMAL="\e[0m"
+    UNDER="\e[4m"
+fi
 
 if [ "$(which curl 2>/dev/null)" ]; then
     # if curl is installed, then
@@ -61,11 +71,11 @@ fi
 # end of argument detection
 
 KERNELNAME="$(uname -s)"
-OS="$(uname -o)"
+OS="$(uname -o 2>/dev/null)"
 KERNEL="$(uname -r)"
 USER="$(whoami)"
 HOSTNAME="$(hostname)"
-FIRST="\e[1m$USER\e[0m@\e[1m"
+FIRST="${BOLD}$USER${NORMAL}@${BOLD}"
 BONUS1=""
 # set up basic variables
 
@@ -129,87 +139,91 @@ if [ "$OS" = "Android" ];then
 
     FIRST+="$(getprop ro.product.manufacturer)"
     # add to the variable FIRST (first line of output) the output of command 'getprop ro.product.manufacturer', it's output is the user's phone manufacturer (Huawei, Samsung, ...)
-    FIRST+=" $(getprop ro.product.model)\e[0m"
+    FIRST+=" $(getprop ro.product.model)${NORMAL}"
     # add to the variable FIRST the output of command 'getprop ro.product.model', it's output is the user's phone model
 
-    SECOND="\e[1m$OS"
+    SECOND="${BOLD}$OS"
     # set variable SECOND (second line of output) to the output of variable OS (Android in every case in this if)
-    SECOND+=" $ANDVERSION\e[0m"
+    SECOND+=" $ANDVERSION${NORMAL}"
     # add to the variable SECOND the variable ANDVERSION
-    SECOND+=" (\e[1m$KERNELNAME $KERNEL\e[0m)"
+    SECOND+=" (${BOLD}$KERNELNAME $KERNEL${NORMAL})"
     # add to the variable SECOND the variable KERNELNAME and KERNEL
 
-    BONUS1="Mobile ISP : \e[1m$ISPNAME\e[0m (\e[1m$ISPCOUNTRY\e[0m)"
+    BONUS1="Mobile ISP : ${BOLD}$ISPNAME${NORMAL} (${BOLD}$ISPCOUNTRY${NORMAL})"
     # set variable BONUS1 to "Mobile ISP : " and variable ISPNAME and ISPCOUNTRY
 else
     # else :troll:
     # --- FOR ANYTHING ELSE (including cygwin) ---
-    FIRST+="$HOSTNAME\e[0m"
+    FIRST+="$HOSTNAME${NORMAL}"
     # add to variable FIRST the output of command 'hostname' (machine name)
 
     case "$OSTYPE" in
         # if env variable OSTYPE is equal to
-        solaris*) OS="\e[1mSolaris\e[0m" ;;
-        # solaris* then set varible OS to "Solaris"
-        darwin*)  OS="\e[1mMac OS X\e[0m" ;;
-        # darwin* then set varible OS to "Mac OS X"
-        linux*)   OS="\e[1mGNU/Linux\e[0m" ;;
-        # linux* then set varible OS to "GNU/Linux"
-        bsd*)     OS="\e[1mBSD* $(uname -r | grep -o '[0-9]*\.[0-9]')\e[0m" ;;
-        # bsd* then set varible OS to "BSD*" and version
-        *bsd)  OS="\e[1m*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')\e[0m" ;;
-        # FreeBSD then set varible OS to "*BSD" and version
-        msys*)    OS="\e[1mWindows\e[0m" ;;
-        # msys* then set varible OS to "Windows" (not sure this can happen
-        cygwin*)  OS="\e[1mWindows\e[0m" ;;
-        # cygwin* then set varible OS to "Windows"
-        *)        OS="\e[1m$OSTYPE\e[0m" ;;
+        solaris*) OS="${BOLD}Solaris${NORMAL}" ;;
+        # solaris* then set variable OS to "Solaris"
+        darwin*)  OS="${BOLD}$(sw_vers -productName) $(sw_vers -productVersion)${NORMAL}" ;;
+        # darwin* then set variable OS to "Mac OS X"
+        linux*)   OS="${BOLD}GNU/Linux${NORMAL}" ;;
+        # linux* then set variable OS to "GNU/Linux"
+        bsd*)     OS="${BOLD}BSD* $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        # bsd* then set variable OS to "BSD*" and version
+        *bsd)  OS="${BOLD}*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        # FreeBSD then set variable OS to "*BSD" and version
+        msys*)    OS="${BOLD}Windows${NORMAL}" ;;
+        # msys* then set variable OS to "Windows" (not sure this can happen)
+        cygwin*)  OS="${BOLD}Windows${NORMAL}" ;;
+        # cygwin* then set variable OS to "Windows"
+				haiku*) OS="${BOLD}Haiku${NORMAL}" ;;
+        # haiku* then set variable OS to "Haiku"
+				linux-android*) OS="${BOLD}Android${NORMAL}" ;;
+				# linux-android* set variable OS to "Android"
+        *)        OS="${BOLD}$OSTYPE${NORMAL}" ;;
         # anything else then set varible OS to env var OSTYPE
     esac
     # https://stackoverflow.com/a/18434831
     # end of case
-    if [ "$OS" = "\e[1mGNU/Linux\e[0m" ]; then
+    if [ "$OS" = "${BOLD}GNU/Linux${NORMAL}" ]; then
         # if variable OS is equal to GNU/Linux (+ formatting
         if [ $(which yum 2>/dev/null) ]; then
             # and if which yum is true (package exist)
             source /etc/os-release
-            OS="\e[1m$PRETTY_NAME\e[0m"
+            OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to PRETTY_NAME
         elif [ $(which apt 2>/dev/null) ]; then
             # or if which apt is true (package exist)
             source /etc/os-release
             # take variables from /etc/os-release
-            OS="\e[1m$PRETTY_NAME\e[0m"
+            OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to PRETTY_NAME
         elif [ $(which apk 2>/dev/null) ]; then
             # or if which apk is positive (package exists)
             source /etc/os-release
             # get variables from /etc/os-release
-            OS="\e[1m$PRETTY_NAME\e[0m"
+            OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
         elif [ $(which pacman 2>/dev/null) ]; then
             # or if which pacman is positive (package exists)
             source /etc/os-release
             # get vars from /etc/os-release
-            OS="\e[1m$PRETTY_NAME\e[0m"
+            OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable Os to the variable PRETTY_NAME of /etc/os_release
         elif [ $(which cards 2>/dev/null) ]; then
 			# or if which cards is positive (package exists)
 			source /etc/lsb-release
 			# get vars from /etc/lsb-release
-			OS="\e[1m$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)\e[0m"
+			OS="${BOLD}$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)${NORMAL}"
         fi
         # end of if
     fi
     # end of if
-    SECOND="\e[1m$OS\e[0m"
+    SECOND="${BOLD}$OS${NORMAL}"
     # set variable SECOND (second line of output) to variable OS
-    SECOND+=" (\e[4m$KERNELNAME $KERNEL\e[0m)"
+    SECOND+=" (${UNDER}$KERNELNAME $KERNEL${NORMAL})"
     # add to variable SECOND the variable KERNELNAME and KERNEL
 fi
 # end of if
 
-THIRD="Arch: \e[1m$(uname -m)\e[0m"
+THIRD="Arch: ${BOLD}$(uname -m)${NORMAL}"
 # set variable THIRD to architecture (using uname)
 
 FOURTH="Shell:"
@@ -218,22 +232,22 @@ if [ $(echo $SHELL | grep "zsh") ]; then
     # if env var SHELL contains "zsh"
     SH="$(zsh --version | grep -o 'zsh [0-9]\.[0-9]\.[0-9]')"
     # set SH variable to output of "zsh --version" (modified using grep)
-    FOURTH+=" \e[1m$SH\e[0m"
+    FOURTH+=" ${BOLD}$SH${NORMAL}"
     # add to variable FOURTH variable SH
 elif [ $(echo $SHELL | grep "bash") ]; then
     # or if env var contains bash
     SH="$(bash --version | head -1 | cut -d ' ' -f 4)"
     # set SH variable to output of "bash --version" (modified using head and cut)
     # https://askubuntu.com/a/1008422
-    FOURTH+=" \e[1mbash $SH\e[0m"
+    FOURTH+=" ${BOLD}bash $SH${NORMAL}"
     # add to variable FOURTH "bash" and variable SH
 elif [ $(echo $SHELL | grep "csh") ]; then
     # or if env var contains csh
     SH="$(csh --version | grep -o 'csh [0-9]*\.[0-9]*\.[0-9]')"
-    FOURTH+=" \e[1m$SH\e[0m"
+    FOURTH+=" ${BOLD}$SH${NORMAL}"
 elif [ $(echo $SHELL | grep "/bin/sh") ]; then
     # or if env var contains /bin/sh
-    FOURTH+=" \e[1msh\e[0m"
+    FOURTH+=" ${BOLD}sh${NORMAL}"
     # add to variable FOURTH "sh"
 else
     # if shell isn't one listed above
@@ -249,9 +263,9 @@ fi
 
 if [ "$($REQMNGR https://v4.ident.me)" ]; then
     # set variable FIFTH "Public IP(v4): "
-    FIFTH+=" \e[1m$($REQMNGR https://v4.ident.me)\e[0m"
+    FIFTH+=" ${BOLD}$($REQMNGR https://v4.ident.me)${NORMAL}"
     # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
-	FIFTH+=" (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-))\e[0m"
+	FIFTH+=" (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
     # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 else
     FIFTH=" Unable to connect to v4.ident.me (?)"
@@ -263,7 +277,7 @@ if [ "$($REQMNGR https://v6.ident.me/)" ]; then
 	if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
 		FIFTH="\nTor IP(v6): "
 	fi
-	FIFTH+="\e[1m$($REQMNGR https://v6.ident.me/)\e[0m (\e[1m$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)\e[0m)"
+	FIFTH+="${BOLD}$($REQMNGR https://v6.ident.me/)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
 
@@ -271,9 +285,9 @@ SIXTH="Local IP: "
 # set variable SIXTH to "Local IP: "
 
 if [ "$(hostname -I 2>/dev/null)" ]; then
-    SIXTH+="\e[1m$(hostname -I)\e[0m"
+    SIXTH+="${BOLD}$(hostname -I)${NORMAL}"
 elif [ "$(which ifconfig 2>/dev/null)" ]; then
-    SIXTH+="\e[1m$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')\e[0m"
+    SIXTH+="${BOLD}$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')${NORMAL}"
 else
     SIXTH+="Unable to get local IP"
 fi
