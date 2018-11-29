@@ -330,6 +330,8 @@ echo -e $BONUS1
 
 fi
 
+echo -e " \e[30;40m██\e[0m\e[31;41m██\e[0m\e[32;42m██\e[0m\e[33;43m██\e[0m\e[34;44m██\e[0m\e[35;45m██\e[0m\e[36;46m██\e[0m\e[37;47m██\e[0m"
+
 echo
 echo "Report any errors here :"
 echo "https://github.com/jusdepatate/info.sh"
