@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.30-01"
+               VERSION="2018.11.30-02"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -14,16 +14,32 @@
 # Arguments :
 # --update : update info.sh
 # -v : output version of info.sh
-# --upload : upload output to transfer.sh
+# --upload : upload output to transfer.sh (without public IPs)
 
 if [ "$(which tput 2>/dev/null)" ]; then
     BOLD=$(tput bold)
     NORMAL=$(tput sgr0)
     UNDER=$(tput smul)
+    GREY=$(tput setab 0 && tput setaf 0)
+    RED=$(tput setab 1 && tput setaf 1)
+    GREEN=$(tput setab 2 && tput setaf 2)
+    YELLOW=$(tput setab 3 && tput setaf 3)
+    BLUE=$(tput setab 4 && tput setaf 4)
+    MAG=$(tput setab 5 && tput setaf 5)
+    CYAN=$(tput setab 6 && tput setaf 6)
+    WHITE=$(tput setab 7 && tput setaf 7)
 else
     BOLD="\e[1m"
     NORMAL="\e[0m"
     UNDER="\e[4m"
+    GREY="\e[30;40m"
+    RED="\e[31;41m"
+    GREEN="\e[32;42m"
+    YELLOW="\e[33;43m"
+    BLUE="\e[34;44m"
+    MAG="\e[35;45m"
+    CYAN="\e[36;46m"
+    WHITE="\e[97;107m"
 fi
 
 if [ "$(which curl 2>/dev/null)" ]; then
@@ -157,11 +173,11 @@ else
     # --- FOR ANYTHING ELSE ---
     FIRST+="$HOSTNAME${NORMAL}"
     # add to variable FIRST the output of command 'hostname' (machine name)
-
-    if [ "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ]; then
-           FIRST+=" (${BOLD}$(cat /sys/devices/virtual/dmi/id/product_name)${NORMAL})"
-    fi
     
+    if [ "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ]; then
+        FIRST+=" (${BOLD}$(cat /sys/devices/virtual/dmi/id/product_name)${NORMAL})"
+    fi
+
     case "$OSTYPE" in
         # if env variable OSTYPE is equal to
         solaris*) OS="${BOLD}Solaris${NORMAL}" ;;
@@ -172,8 +188,8 @@ else
 	# linux-android* set variable OS to "Android"
         linux*)   OS="${BOLD}GNU/Linux${NORMAL}" ;;
         # linux* then set variable OS to "GNU/Linux"
-	gnu*)   OS="${BOLD}GNU/Linux${NORMAL}" ;;
-        # linux* then set variable OS to "GNU/Linux"
+	gnu*) OS="${BOLD}GNU/Linux${NORMAL}" ;;
+	# gnu* set variable OS to "GNU/Linux"
         bsd*)     OS="${BOLD}BSD* $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # bsd* then set variable OS to "BSD*" and version
         *bsd)  OS="${BOLD}*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
@@ -229,6 +245,12 @@ else
     # add to variable SECOND the variable KERNELNAME and KERNEL
 fi
 # end of if
+
+if [ "$(which dpkg 2>/dev/null)" ]; then
+    DPKGS="$(dpkg --get-selections | grep -c 'install')"
+    PACKAGES="Packages: "
+    PACKAGES+="$DPKGS (dpkg)"
+fi
 
 THIRD="Arch: ${BOLD}$(uname -m)${NORMAL}"
 # set variable THIRD to architecture (using uname)
@@ -320,7 +342,12 @@ echo -e $SECOND
 # Second : OS
 
 echo -e $THIRD
-# Third : Package Arch
+# Third : Arch
+
+if [ -n "$PACKAGES" ]; then
+    echo -e $PACKAGES
+    # New line : Number of pkgs
+fi
 
 echo -e $FOURTH
 # Fourth : Shell + version (only for bash and zsh)
@@ -336,7 +363,8 @@ echo -e $BONUS1
 
 fi
 
-echo -e " \e[30;40m██\e[0m\e[31;41m██\e[0m\e[32;42m██\e[0m\e[33;43m██\e[0m\e[34;44m██\e[0m\e[35;45m██\e[0m\e[36;46m██\e[0m\e[37;47m██\e[0m"
+echo
+echo -e " ${GREY}██${NORMAL}${RED}██${NORMAL}${GREEN}██${NORMAL}${YELLOW}██${NORMAL}${BLUE}██${NORMAL}${MAG}██${NORMAL}${CYAN}██${NORMAL}${WHITE}██${NORMAL}"
 
 echo
 echo "Report any errors here :"
