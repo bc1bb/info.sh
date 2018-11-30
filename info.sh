@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.29-01"
+               VERSION="2018.11.30-01"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -154,17 +154,25 @@ if [ "$OS" = "Android" ];then
     # set variable BONUS1 to "Mobile ISP : " and variable ISPNAME and ISPCOUNTRY
 else
     # else :troll:
-    # --- FOR ANYTHING ELSE (including cygwin) ---
+    # --- FOR ANYTHING ELSE ---
     FIRST+="$HOSTNAME${NORMAL}"
     # add to variable FIRST the output of command 'hostname' (machine name)
 
+    if [ "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ]; then
+           FIRST+=" (${BOLD}$(cat /sys/devices/virtual/dmi/id/product_name)${NORMAL})"
+    fi
+    
     case "$OSTYPE" in
         # if env variable OSTYPE is equal to
         solaris*) OS="${BOLD}Solaris${NORMAL}" ;;
         # solaris* then set variable OS to "Solaris"
         darwin*)  OS="${BOLD}$(sw_vers -productName) $(sw_vers -productVersion)${NORMAL}" ;;
         # darwin* then set variable OS to "Mac OS X"
+	linux-android*) OS="${BOLD}Android${NORMAL}" ;;
+	# linux-android* set variable OS to "Android"
         linux*)   OS="${BOLD}GNU/Linux${NORMAL}" ;;
+        # linux* then set variable OS to "GNU/Linux"
+	gnu*)   OS="${BOLD}GNU/Linux${NORMAL}" ;;
         # linux* then set variable OS to "GNU/Linux"
         bsd*)     OS="${BOLD}BSD* $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # bsd* then set variable OS to "BSD*" and version
@@ -174,10 +182,8 @@ else
         # msys* then set variable OS to "Windows" (not sure this can happen)
         cygwin*)  OS="${BOLD}Windows${NORMAL}" ;;
         # cygwin* then set variable OS to "Windows"
-				haiku*) OS="${BOLD}Haiku${NORMAL}" ;;
+	haiku*) OS="${BOLD}Haiku${NORMAL}" ;;
         # haiku* then set variable OS to "Haiku"
-				linux-android*) OS="${BOLD}Android${NORMAL}" ;;
-				# linux-android* set variable OS to "Android"
         *)        OS="${BOLD}$OSTYPE${NORMAL}" ;;
         # anything else then set varible OS to env var OSTYPE
     esac
