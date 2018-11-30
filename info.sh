@@ -255,7 +255,7 @@ if [ "$(which apk 2>/dev/null)" ]; then
     APKS="$(apk list 2>/dev/null | grep -c 'installed')"
     PACKAGES+="$APKS (apk) "
 fi
-fi [ "$OS" = "Android" ]; then
+if [ "$OS" = "Android" ]; then
     PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
     PACKAGES+="$PKGS (pkg) "
 fi
