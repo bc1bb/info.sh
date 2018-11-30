@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.11.30-02"
+               VERSION="2018.11.30-03"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -246,10 +246,18 @@ else
 fi
 # end of if
 
+PACKAGES="Packages: "
 if [ "$(which dpkg 2>/dev/null)" ]; then
     DPKGS="$(dpkg --get-selections | grep -c 'install')"
-    PACKAGES="Packages: "
-    PACKAGES+="$DPKGS (dpkg)"
+    PACKAGES+="$DPKGS (dpkg) "
+fi
+if [ "$(which apk 2>/dev/null)" ]; then
+    APKS="$(apk list 2>/dev/null | grep -c 'installed')"
+    PACKAGES+="$APKS (apk) "
+fi
+fi [ "$OS" = "Android" ]; then
+    PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
+    PACKAGES+="$PKGS (pkg) "
 fi
 
 THIRD="Arch: ${BOLD}$(uname -m)${NORMAL}"
@@ -304,9 +312,9 @@ if [ "$($REQMNGR https://v6.ident.me/)" ]; then
     FIFTH+="\nPublic IP(v6):"
 
 	if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
-		FIFTH="\nTor IP(v6): "
+		FIFTH="\nTor IP(v6):"
 	fi
-	FIFTH+="${BOLD}$($REQMNGR https://v6.ident.me/)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
+	FIFTH+=" ${BOLD}$($REQMNGR https://v6.ident.me/)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
 
