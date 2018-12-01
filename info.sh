@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.01-04"
+               VERSION="2018.12.01-05"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -44,28 +44,28 @@ fi
 
 if [ "$(which curl 2>/dev/null)" ]; then
     # if curl is installed, then
-	REQMNGR="curl -s --max-time 10"
-	# use curl as request manager
+        REQMNGR="curl -s --max-time 10"
+        # use curl as request manager
     DWNMNGR="curl -s --max-time 10 -LO"
-	# use curl to download update
-	UPMNGR="curl --upload-file"
+        # use curl to download update
+        UPMNGR="curl --upload-file"
 elif [ "$(which wget 2>/dev/null)" ]; then
     # if wget is installed, then
-	REQMNGR="wget -qO- --timeout=10"
-	# use wget as request manager
-	DWNMNGR="wget -q --timeout=10"
-	# use wget to download update
-	if [ "$1" = "--upload" ]; then
-		echo "wget isn't supported for upload"
-		echo "please install curl"
-		exit 1
-	fi
+        REQMNGR="wget -qO- --timeout=10"
+        # use wget as request manager
+        DWNMNGR="wget -q --timeout=10"
+        # use wget to download update
+        if [ "$1" = "--upload" ]; then
+                echo "wget isn't supported for upload"
+                echo "please install curl"
+                exit 1
+        fi
 else
 # if curl and wget aren't installed, then
-	echo "Please install curl or wget"
-	# error message
-	exit 1
-	# stop program (with an error)
+        echo "Please install curl or wget"
+        # error message
+        exit 1
+        # stop program (with an error)
 fi
 # end of if
 
@@ -79,10 +79,10 @@ if [ "$1" = "--update" ]; then
     # stop program
 elif [ "$1" = "-v" ]; then
 # if user wants to see version installed
-	echo "info.sh $VERSION"
-	# output version
-	exit 0
-	# stop program
+        echo "info.sh $VERSION"
+        # output version
+        exit 0
+        # stop program
 fi
 # end of argument detection
 
@@ -132,28 +132,33 @@ else
     # --- FOR ANYTHING ELSE ---
     FIRST+="$HOSTNAME${NORMAL}"
     # add to variable FIRST the output of command 'hostname' (machine name)
-    product_name="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
-    if [ "$product_name" -ne "System Product Name" ]; then
-        FIRST+=" (${BOLD}$(cat /sys/devices/virtual/dmi/id/product_name)${NORMAL})"
+    PRDCT="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
+    if [ "$PRDCT" = "" ]; then
+                b=b
+                else
+                if [ "$PRDCT" = "System Product Name" ]; then
+       a=a
+                else
+                                FIRST+=" (${BOLD}$(cat /sys/devices/virtual/dmi/id/product_name)${NORMAL})"
     fi
-
+          fi
     case "$OSTYPE" in
         # if env variable OSTYPE is equal to
         solaris*) OS="${BOLD}Solaris${NORMAL}" ;;
         # solaris* then set variable OS to "Solaris"
         darwin*)  OS="${BOLD}$(sw_vers -productName) $(sw_vers -productVersion)${NORMAL}" ;;
         # darwin* then set variable OS to "Mac OS X"
-	linux-android*) OS="${BOLD}Android${NORMAL}" ;;
-	# linux-android* set variable OS to "Android"
+        linux-android*) OS="${BOLD}Android${NORMAL}" ;;
+        # linux-android* set variable OS to "Android"
         linux*)   OS="${BOLD}GNU/Linux${NORMAL}" ;;
         # linux* then set variable OS to "GNU/Linux"
-	gnu*) OS="${BOLD}GNU/Linux${NORMAL}" ;;
-	# gnu* set variable OS to "GNU/Linux"
-	dragonfly*)     OS="${BOLD}DragonFlyBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        gnu*) OS="${BOLD}GNU/Linux${NORMAL}" ;;
+        # gnu* set variable OS to "GNU/Linux"
+        dragonfly*)     OS="${BOLD}DragonFlyBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # dragonfly* then set variable OS to "DragonFlyBSD" and version
-	FreeBSD*)     OS="${BOLD}FreeBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        FreeBSD*)     OS="${BOLD}FreeBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # FreeBSD* then set variable OS to "FreeBSD" and version
-	netbsd*)     OS="${BOLD}NetBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        netbsd*)     OS="${BOLD}NetBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # netbsd* then set variable OS to "netbsd" and version
         bsd*)     OS="${BOLD}BSD* $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # bsd* then set variable OS to "BSD*" and version
@@ -163,7 +168,7 @@ else
         # msys* then set variable OS to "Windows" (not sure this can happen)
         cygwin*)  OS="${BOLD}Windows${NORMAL}" ;;
         # cygwin* then set variable OS to "Windows"
-	haiku*) OS="${BOLD}Haiku${NORMAL}" ;;
+        haiku*) OS="${BOLD}Haiku${NORMAL}" ;;
         # haiku* then set variable OS to "Haiku"
         *)        OS="${BOLD}$OSTYPE${NORMAL}" ;;
         # anything else then set varible OS to env var OSTYPE
@@ -189,7 +194,7 @@ else
             # get variables from /etc/os-release
             OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
-	          if [ "$(uname -r | grep 'ish')" ]; then OS="${BOLD}iOS/$PRETTY_NAME${NORMAL}"; fi
+                  if [ "$(uname -r | grep 'ish')" ]; then OS="${BOLD}iOS/$PRETTY_NAME${NORMAL}"; fi
         elif [ $(which pacman 2>/dev/null) ]; then
             # or if which pacman is positive (package exists)
             source /etc/os-release
@@ -197,10 +202,10 @@ else
             OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable Os to the variable PRETTY_NAME of /etc/os_release
         elif [ $(which cards 2>/dev/null) ]; then
-	    # or if which cards is positive (package exists)
-	    source /etc/lsb-release
-	    # get vars from /etc/lsb-release
-	    OS="${BOLD}$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)${NORMAL}"
+            # or if which cards is positive (package exists)
+            source /etc/lsb-release
+            # get vars from /etc/lsb-release
+            OS="${BOLD}$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)${NORMAL}"
         fi
         # end of if
     fi
@@ -215,23 +220,23 @@ fi
 PACKAGES="Packages: "
 if [ "$(which dpkg 2>/dev/null)" ]; then
     DPKGS="$(dpkg --get-selections | grep -c 'install')"
-    PACKAGES+="$DPKGS (dpkg) "
+    PACKAGES+="${BOLD}$DPKGS${NORMAL} (dpkg) "
 fi
 if [ "$(which apk 2>/dev/null)" ]; then
     APKS="$(apk list 2>/dev/null | grep -c 'installed')"
-    PACKAGES+="$APKS (apk) "
+    PACKAGES+="${BOLD}$APKS${NORMAL} (apk) "
 fi
 if [ "$(which pacman 2>/dev/null)" ]; then
-	PACMANS="$(pacman -Q 2>/dev/null | wc -l)"
-	PACKAGES+="$PACMANS (pacman) "
+        PACMANS="$(pacman -Q 2>/dev/null | wc -l)"
+        PACKAGES+="${BOLD}$PACMANS${NORMAL} (pacman) "
 fi
 if [ "$(which flatpak 2>/dev/null)" ]; then
         FLATPAKS="$(flatpak list 2>/dev/null | wc -l)"
-	PACKAGES+="$FLATPAKS (flatpak) "
+        PACKAGES+="${BOLD}$FLATPAKS${NORMAL} (flatpak) "
 fi
-if [ "$(which getprop)" && "$OS" = "Android" ]; then
+if [ "$(which getprop && $OS = 'Android')" ]; then
     PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
-    PACKAGES+="$PKGS (pkg) "
+    PACKAGES+="${BOLD}$PKGS${NORMAL} (pkg) "
 fi
 
 THIRD="Arch: ${BOLD}$(uname -m)${NORMAL}"
@@ -269,14 +274,14 @@ fi
 FIFTH="Public IP(v4): "
 
 if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
-	FIFTH="Tor IP(v4): "
+        FIFTH="Tor IP(v4): "
 fi
 
 if [ "$($REQMNGR https://v4.ident.me)" ]; then
     # set variable FIFTH "Public IP(v4): "
     FIFTH+=" ${BOLD}$($REQMNGR https://v4.ident.me)${NORMAL}"
     # connect to v4.ident.me with timeout of 10 seconds and put output into variable FIFTH
-	FIFTH+=" (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
+        FIFTH+=" (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
     # connect to ifconfig.io/country_code with timeout of 10 seconds and put output into variable FIFTH
 else
     FIFTH=" Unable to connect to v4.ident.me (?)"
@@ -285,10 +290,10 @@ if [ "$($REQMNGR https://v6.ident.me/)" ]; then
     # if i can connect to v6.ident.me with 10s of timeout (it means that user has an IPv6)
     FIFTH+="\nPublic IP(v6):"
 
-	if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
-		FIFTH="\nTor IP(v6):"
-	fi
-	FIFTH+=" ${BOLD}$($REQMNGR https://v6.ident.me/)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
+        if [ "$($REQMNGR https://check.torproject.org/api/ip | grep 'true')" ]; then
+                FIFTH="\nTor IP(v6):"
+        fi
+        FIFTH+=" ${BOLD}$($REQMNGR https://v6.ident.me/)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
     # add a line to variable FIFTH containing result of v6.ident.me and ifconfig.io with 10s of timeout for both
 fi
 
@@ -305,10 +310,10 @@ fi
 # --- ECHO ---
 
 if [ "$1" = "--upload" ]; then
-	echo -e "$(banner $(date '+%A %d %B, %Y'))\n$FIRST\n$SECOND\n$THIRD\n$PACKAGES\n$FOURTH\nPublic IP(vX): Not shown\n$SIXTH\n$BONUS1\n\ninfo.sh $VERSION\nhttps://github.com/jusdepatate/info.sh" > info.sh.log
-	$UPMNGR info.sh.log https://transfer.sh/
-	rm -f info.sh.log
-	exit
+        echo -e "$(banner $(date '+%A %d %B, %Y'))\n$FIRST\n$SECOND\n$THIRD\n$PACKAGES\n$FOURTH\nPublic IP(vX): Not shown\n$SIXTH\n$BONUS1\n\ninfo.sh $VERSION\nhttps://github.com/jusdepatate/info.sh" > info.sh.log
+        $UPMNGR info.sh.log https://transfer.sh/
+        rm -f info.sh.log
+        exit
 fi
 
 banner $(date "+%A %d %B, %Y")
