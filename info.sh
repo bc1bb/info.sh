@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.01-03"
+               VERSION="2018.12.01-04"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -86,9 +86,8 @@ elif [ "$1" = "-v" ]; then
 fi
 # end of argument detection
 
-KERNELNAME="$(uname -s)"
 OS="$(uname -o 2>/dev/null)"
-KERNEL="$(uname -r)"
+KERNEL="$(uname -sr)"
 USER="$(whoami)"
 HOSTNAME="$(hostname)"
 FIRST="${BOLD}$USER${NORMAL}@${BOLD}"
@@ -150,6 +149,12 @@ else
         # linux* then set variable OS to "GNU/Linux"
 	gnu*) OS="${BOLD}GNU/Linux${NORMAL}" ;;
 	# gnu* set variable OS to "GNU/Linux"
+	dragonfly*)     OS="${BOLD}DragonFlyBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        # dragonfly* then set variable OS to "DragonFlyBSD" and version
+	FreeBSD*)     OS="${BOLD}FreeBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        # FreeBSD* then set variable OS to "FreeBSD" and version
+	netbsd*)     OS="${BOLD}NetBSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
+        # netbsd* then set variable OS to "netbsd" and version
         bsd*)     OS="${BOLD}BSD* $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
         # bsd* then set variable OS to "BSD*" and version
         *bsd)  OS="${BOLD}*BSD $(uname -r | grep -o '[0-9]*\.[0-9]')${NORMAL}" ;;
@@ -184,7 +189,7 @@ else
             # get variables from /etc/os-release
             OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
-	          if [ "$(uname -r | grep 'ish')" ]; then OS="${BOLD}iOS/$PRETTY_NAME${NORMAL}"
+	          if [ "$(uname -r | grep 'ish')" ]; then OS="${BOLD}iOS/$PRETTY_NAME${NORMAL}"; fi
         elif [ $(which pacman 2>/dev/null) ]; then
             # or if which pacman is positive (package exists)
             source /etc/os-release
@@ -202,7 +207,7 @@ else
     # end of if
     SECOND="${BOLD}$OS${NORMAL}"
     # set variable SECOND (second line of output) to variable OS
-    SECOND+=" (${UNDER}$KERNELNAME $KERNEL${NORMAL})"
+    SECOND+=" (${UNDER}$KERNEL${NORMAL})"
     # add to variable SECOND the variable KERNELNAME and KERNEL
 fi
 # end of if
@@ -224,7 +229,7 @@ if [ "$(which flatpak 2>/dev/null)" ]; then
         FLATPAKS="$(flatpak list 2>/dev/null | wc -l)"
 	PACKAGES+="$FLATPAKS (flatpak) "
 fi
-if [ "$OS" = "Android" ]; then
+if [ "$(which getprop)" && "$OS" = "Android" ]; then
     PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
     PACKAGES+="$PKGS (pkg) "
 fi
@@ -300,7 +305,7 @@ fi
 # --- ECHO ---
 
 if [ "$1" = "--upload" ]; then
-	echo -e "$(banner $(date '+%A %d %B, %Y'))\n$FIRST\n$SECOND\n$THIRD\n$FOURTH\nPublic IP(vX): Not shown\n$SIXTH\n$BONUS1\n\ninfo.sh $VERSION\nhttps://github.com/jusdepatate/info.sh" > info.sh.log
+	echo -e "$(banner $(date '+%A %d %B, %Y'))\n$FIRST\n$SECOND\n$THIRD\n$PACKAGES\n$FOURTH\nPublic IP(vX): Not shown\n$SIXTH\n$BONUS1\n\ninfo.sh $VERSION\nhttps://github.com/jusdepatate/info.sh" > info.sh.log
 	$UPMNGR info.sh.log https://transfer.sh/
 	rm -f info.sh.log
 	exit
@@ -335,8 +340,10 @@ echo -e $FIFTH
 echo -e $SIXTH
 # Sixth : Local IP
 
-echo -e $BONUS1
-# Bonus1 : Mobile ISP (Termux-only)
+if [ -n "$BONUS1" ]; then
+    echo -e $BONUS1
+    # Mobile operator
+fi
 
 echo
 echo -e " ${GREY}██${NORMAL}${RED}██${NORMAL}${GREEN}██${NORMAL}${YELLOW}██${NORMAL}${BLUE}██${NORMAL}${MAG}██${NORMAL}${CYAN}██${NORMAL}${WHITE}██${NORMAL}"
