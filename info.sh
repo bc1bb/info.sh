@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.01-01"
+               VERSION="2018.12.01-02"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -104,46 +104,6 @@ banner() {
 }
 # https://unix.stackexchange.com/a/250094
 
-if [ $(uname -r | grep "ish") ]; then
-    banner $(date "+%A %d %B, %Y")
-    # add a banner with the date
-    echo
-    # new line
-    echo -e "${BOLD}$USER${NORMAL}@${BOLD}$HOSTNAME${NORMAL}"
-    # user@machine name
-    source /etc/os-release
-    # get vars from /etc/os-release
-    echo -e "${BOLD}iOS/$PRETTY_NAME${NORMAL} (${UNDER}$OS $KERNEL${NORMAL})"
-    # says the kernel name (Linux) and version
-    echo -e "Arch: ${BOLD}$(uname -m)${NORMAL}"
-    # says the arch of iSH
-    if [ "$SHELL" = "/bin/ash" ]; then
-        # if SHELL is ash
-        echo -e "Shell: ${BOLD}ash${NORMAL}"
-        # ...
-    else
-        # if SHELL isn't ash (as I know, for now it's impossible to use bash nor zsh on iSH)
-        echo -e "Shell: ${BOLD}$SHELL${NORMAL}"
-        # give the path to the shell
-    fi
-    # end of if
-    echo -e "Public IP(v4): ${BOLD}$($REQMNGR https://v4.ident.me)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
-    # says the public ipv4
-    if [ "$($REQMNGR https://v6.ident.me)" ]; then
-        # if i can connect to v6.ident.me with timeout of 10s
-        echo -e "Public IP(v6): ${BOLD}$($REQMNGR https://v6.ident.me)${NORMAL} (${BOLD}$($REQMNGR ifconfig.io/country_code) - $($REQMNGR ipinfo.io/org | awk '{print $1}') - $($REQMNGR ipinfo.io/org | cut -d' ' -f2-)${NORMAL})"
-        # says IPv6 of the user (for now it is impossible)
-    else
-        # if curl output is negative (error)
-        echo -e "You probably have an IPv6 but iSH doesn't support it :("
-        # :(
-    fi
-    # end of if
-    echo -e "Due to limitation of iSH, this script can't show local ip"
-    # :(
-else
-# end of iSH detection
-
 if [ "$OS" = "Android" ];then
     # If user's os is Android (Termux)
     # --- FOR ANDROID (Termux) ---
@@ -173,8 +133,8 @@ else
     # --- FOR ANYTHING ELSE ---
     FIRST+="$HOSTNAME${NORMAL}"
     # add to variable FIRST the output of command 'hostname' (machine name)
-    
-    if [ "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ]; then
+    product_name="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
+    if [ "$product_name" -ne "System Product Name" ]; then
         FIRST+=" (${BOLD}$(cat /sys/devices/virtual/dmi/id/product_name)${NORMAL})"
     fi
 
@@ -224,7 +184,8 @@ else
             # get variables from /etc/os-release
             OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
-        elif [ $(which pacman 2>/dev/null) ]; then
+	          if [ "$(uname -r | grep 'ish')" ]; then OS="${BOLD}iOS/$PRETTY_NAME${NORMAL}"
+        elif [ $(which pacman 2>/dev/null) ]; thenj
             # or if which pacman is positive (package exists)
             source /etc/os-release
             # get vars from /etc/os-release
@@ -376,8 +337,6 @@ echo -e $SIXTH
 
 echo -e $BONUS1
 # Bonus1 : Mobile ISP (Termux-only)
-
-fi
 
 echo
 echo -e " ${GREY}██${NORMAL}${RED}██${NORMAL}${GREEN}██${NORMAL}${YELLOW}██${NORMAL}${BLUE}██${NORMAL}${MAG}██${NORMAL}${CYAN}██${NORMAL}${WHITE}██${NORMAL}"
