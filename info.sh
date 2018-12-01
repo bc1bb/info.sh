@@ -259,6 +259,10 @@ if [ "$(which pacman 2>/dev/null)" ]; then
 	PACMANS="$(pacman -Q 2>/dev/null | wc -l)"
 	PACKAGES+="$PACMANS (pacman) "
 fi
+if [ "$(which flatpak 2>/dev/null)" ]; then
+        FLATPAKS="$(flatpak list 2>/dev/null | wc -l)"
+	PACKAGES+="$FLATPAKS (flatpak) "
+fi
 if [ "$OS" = "Android" ]; then
     PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
     PACKAGES+="$PKGS (pkg) "
