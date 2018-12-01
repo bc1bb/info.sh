@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.01-02"
+               VERSION="2018.12.01-03"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -185,17 +185,17 @@ else
             OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable OS to the variable PRETTY_NAME of /etc/os_release
 	          if [ "$(uname -r | grep 'ish')" ]; then OS="${BOLD}iOS/$PRETTY_NAME${NORMAL}"
-        elif [ $(which pacman 2>/dev/null) ]; thenj
+        elif [ $(which pacman 2>/dev/null) ]; then
             # or if which pacman is positive (package exists)
             source /etc/os-release
             # get vars from /etc/os-release
             OS="${BOLD}$PRETTY_NAME${NORMAL}"
             # set variable Os to the variable PRETTY_NAME of /etc/os_release
         elif [ $(which cards 2>/dev/null) ]; then
-			# or if which cards is positive (package exists)
-			source /etc/lsb-release
-			# get vars from /etc/lsb-release
-			OS="${BOLD}$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)${NORMAL}"
+	    # or if which cards is positive (package exists)
+	    source /etc/lsb-release
+	    # get vars from /etc/lsb-release
+	    OS="${BOLD}$DISTRIB_ID $DISTRIB_RELEASE ($DISTRIB_CODENAME)${NORMAL}"
         fi
         # end of if
     fi
