@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.01-05"
+               VERSION="2018.12.01-06"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -115,7 +115,7 @@ if [ "$OS" = "Android" ];then
 
     FIRST+="$(getprop ro.product.manufacturer)"
     # add to the variable FIRST (first line of output) the output of command 'getprop ro.product.manufacturer', it's output is the user's phone manufacturer (Huawei, Samsung, ...)
-    FIRST+=" $(getprop ro.product.model)${NORMAL}"
+    FIRST+=" $(getprop ro.product.model)${NORMAL} ($(getprop ro.config.marketing_name))"
     # add to the variable FIRST the output of command 'getprop ro.product.model', it's output is the user's phone model
 
     SECOND="${BOLD}$OS"
@@ -234,7 +234,7 @@ if [ "$(which flatpak 2>/dev/null)" ]; then
         FLATPAKS="$(flatpak list 2>/dev/null | wc -l)"
         PACKAGES+="${BOLD}$FLATPAKS${NORMAL} (flatpak) "
 fi
-if [ "$(which getprop && $OS = 'Android')" ]; then
+if [ "$(which getprop 2>/dev/null && $OS = 'Android' 2>/dev/null)" ]; then
     PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
     PACKAGES+="${BOLD}$PKGS${NORMAL} (pkg) "
 fi
