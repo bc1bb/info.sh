@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.01-06"
+               VERSION="2018.12.02-01"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -115,8 +115,8 @@ if [ "$OS" = "Android" ];then
 
     FIRST+="$(getprop ro.product.manufacturer)"
     # add to the variable FIRST (first line of output) the output of command 'getprop ro.product.manufacturer', it's output is the user's phone manufacturer (Huawei, Samsung, ...)
-    FIRST+=" $(getprop ro.product.model)${NORMAL} ($(getprop ro.config.marketing_name))"
-    # add to the variable FIRST the output of command 'getprop ro.product.model', it's output is the user's phone model
+    FIRST+=" $(getprop ro.product.model)${NORMAL} (${BOLD}$(getprop ro.config.marketing_name)${NORMAL})"
+	# add to the variable FIRST the output of command 'getprop ro.product.model', it's output is the user's phone model
 
     SECOND="${BOLD}$OS"
     # set variable SECOND (second line of output) to the output of variable OS (Android in every case in this if)
@@ -237,6 +237,26 @@ fi
 if [ "$(which getprop 2>/dev/null && $OS = 'Android' 2>/dev/null)" ]; then
     PKGS="$(pkg list-all 2>/dev/null | grep -c 'installed')"
     PACKAGES+="${BOLD}$PKGS${NORMAL} (pkg) "
+fi
+if [ "$(which pip2 2>/dev/null)" ]; then
+	    PIP2S="$(pip2 list --format=columns 2>/dev/null | grep -v 'Package ' | grep -v '\-\-\-\-\-\-\-' | wc -l)"
+        PACKAGES+="${BOLD}$PIP2S${NORMAL} (pip2) "
+fi
+if [ "$(which pip3 2>/dev/null)" ]; then
+		PIP3S="$(pip3 list 2>/dev/null | grep -v 'Package ' | grep -v '\-\-\-\-\-\-\-' | wc -l)"
+		PACKAGES+="${BOLD}$PIP3S${NORMAL} (pip3) "
+fi
+if [ "$(which yarn 2>/dev/null)" ]; then
+        YARNS="$(yarn global list | grep -v 'has binaries' | grep -v 'yarn global v' | grep -v 'Done in' | wc -l)"
+        PACKAGES+="${BOLD}$YARNS${NORMAL} (yarn) "
+fi
+if [ "$(which npm 2>/dev/null)" ]; then
+        NPMS="$(yarn global list | grep -v 'has binaries' | grep -v 'yarn global v' | grep -v 'Done in' | wc -l)"
+        PACKAGES+="${BOLD}$NPMS${NORMAL} (npm) "
+fi
+if [ "$(which brew 2>/dev/null)" ]; then
+        BREWS="$(brew list | wc -l)"
+		PACKAGES+="${BOLD}$BREW${NORMAL} (brew) "
 fi
 
 THIRD="Arch: ${BOLD}$(uname -m)${NORMAL}"
