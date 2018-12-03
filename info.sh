@@ -2,7 +2,7 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.02-01"
+               VERSION="2018.12.03-01"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -221,6 +221,10 @@ PACKAGES="Packages: "
 if [ "$(which dpkg 2>/dev/null)" ]; then
     DPKGS="$(dpkg --get-selections | grep -c 'install')"
     PACKAGES+="${BOLD}$DPKGS${NORMAL} (dpkg) "
+fi
+if [ "$(which apt 2>/dev/null)" ]; then
+    APTS="$(apt list 2>/dev/null | grep -v 'Listing...' | grep 'installed' | wc -l)"
+    PACKAGES+="${BOLD}$APTS${NORMAL} (apt) "
 fi
 if [ "$(which apk 2>/dev/null)" ]; then
     APKS="$(apk list 2>/dev/null | grep -c 'installed')"
