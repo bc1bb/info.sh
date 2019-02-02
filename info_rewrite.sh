@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2018.01.02-01"; indev=true
+                 VERSION="2018.01.02-02"; indev=true
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -129,10 +129,13 @@ getos() {
     verbose "[getos()] getting OS and kernel version"
     verbose
     
-    source /etc/os-release
-    if [ "$(echo $NAME grep "debian")" ]; then OS="debian"; else print "Your OS is not compatible with info.sh rewrited version, original version will probably work, use it instead" && exit 1; fi
-    
-    print "${BOLD}$PRETTY_NAME${NORMAL} (${UNDER}$(uname -o) $(uname -r)${NORMAL})"
+    if [ "$(cat /etc/os-release 2>/dev/null)" ]; then
+         source /etc/os-release
+         OS="$PRETTY_NAME"
+    else
+         OS="$(uname -o)"
+    fi
+    print "${BOLD}$OS${NORMAL} (${UNDER}$(uname -o) $(uname -r)${NORMAL})"
     
     verbose
     verbose "[getos()] Getting arch from uname"
