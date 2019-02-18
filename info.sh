@@ -2,17 +2,18 @@
 #
 # Jus de Patate <yaume@ntymail.com>
 # First release :       2018.11.10-01
-               VERSION="2018.12.03-01"
+               VERSION="2019.02.18-01"
 #                       yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android)
 # but it was tested on Ubuntu, GhostBSD, Termux, iSH, macOS and Fedora
 #
-# License : CC-BY-NC "Jus de Patate, 2018"
+# License : BSD-3-CLAUSE "Jus de Patate, 2018-2019"
 #
 # Arguments :
 # --update : update info.sh
+# --update-rewrite : update info.sh & use rewrite instead of original info.sh
 # -v : output version of info.sh
 # --upload : upload output to transfer.sh (without public IPs)
 
@@ -74,6 +75,15 @@ if [ "$1" = "--update" ]; then
     $DWNMNGR "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info.sh"
     # download new version
     echo -e "Update done,\n$(chmod +x info.sh &>/dev/null && bash info.sh -v) was downloaded"
+    # output new version
+    exit 0
+    # stop program
+elif [ "$1" = "--update-rewrite" ]; then
+# if user wants to update
+    $DWNMNGR "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info_rewrite.sh"
+    # download new version
+    echo -e "Update done,\n$(chmod +x info_rewrite.sh &>/dev/null && bash info_rewrite.sh -v) was downloaded"
+    echo -e "Now the name of of the executable of info.sh is info_rewrite.sh"
     # output new version
     exit 0
     # stop program
