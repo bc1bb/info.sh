@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2018.02.18-02"; indev=true
+                 VERSION="2018.02.18-03"; indev=true
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -98,7 +98,7 @@ first() {
     verbose
     
     PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
-    if [ ! -z "$PNAME" ]; then
+    if [ ! -z "$PNAME" ] && [ "$PNAME" = "System Product Name" ]; then
     	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL} (${BOLD}$PNAME${NORMAL})"
     elif [ "$PNAME" = "System Product Name" ]; then
     	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL}"
@@ -209,7 +209,8 @@ getpubip6() {
     ipv6="$($REQMNGR https://v6.ident.me)"
     if [ ! -z "$ipv6" ]; then
        verbose "[getpubip6()] I got an IPv6"
-       print "Public IPv6 : ${BOLD}$ipv6${NORMAL} (${BOLD}$as${NORMAL} - ${BOLD}$operator${NORMAL} - $cc"
+       verbose
+       print "Public IPv6 : ${BOLD}$ipv6${NORMAL} (${BOLD}$as${NORMAL} - ${BOLD}$operator${NORMAL} - $cc)"
     fi
   else
     verbose
