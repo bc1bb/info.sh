@@ -3,8 +3,8 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2018.01.02-02"; indev=true
-#                       yyyy.mm.dd
+                 VERSION="2018.02.18-02"; indev=true
+#                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
 # it shows infos and was originally made for Termux (Linux on Android).
@@ -12,30 +12,7 @@
 # Same features, better.
 #
 # Copyright (c) 2018-2019, Jus de Patate
-# All rights reserved.
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#
-# * Redistributions of source code must retain the above copyright
-#   notice, this list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright
-#   notice, this list of conditions and the following disclaimer in the
-#   documentation and/or other materials provided with the distribution.
-# * Neither the name of Jus de Patate nor the
-#   names of its contributors may be used to endorse or promote products
-#  derived from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY JUS DE PATATE AND CONTRIBUTORS ``AS IS'' AND ANY
-# EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE REGENTS AND CONTRIBUTORS BE LIABLE FOR ANY
-# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
+# under BSD-3-CLAUSE licence
 # Arguments :
 # -v / --version               : output version of info.sh
 # -U / --update                : update info.sh
@@ -57,6 +34,7 @@
 # macos
 # windows-cygwin
 # unk-linux
+
 if [ "$(which curl 2>/dev/null)" ]; then
         REQMNGR="curl -s --max-time 10"
         DWNMNGR="curl -s --max-time 10 -LO"
@@ -120,8 +98,13 @@ first() {
     verbose
     
     PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
-    if [ ! -z "$PNAME" ]; then print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL} (${BOLD}$PNAME${NORMAL})"
-    else print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL}"; fi
+    if [ ! -z "$PNAME" ]; then
+    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL} (${BOLD}$PNAME${NORMAL})"
+    elif [ "$PNAME" = "System Product Name" ]; then
+    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL}"
+    else
+        print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL}"
+    fi
 }
 getos() {
     verbose
@@ -183,12 +166,12 @@ getshell() {
     verbose 
     
     case $SHELL in
-       /bin/bash) shell="Bash $BASH_VERSION";;
-       /bin/ksh | /bin/pdksh) shell="Korn Shell";;
-       /bin/csh) shell="C Shell";;
-       /bin/tcsh) shell "Tenex Shell";;
-       /bin/zsh) shell="Z Shell $ZSH_VERSION";;
-       /bin/fish) shell="Fish $FISH_VERSION";;
+       /bin/bash | */bin/bash) shell="Bash $BASH_VERSION";;
+       /bin/ksh | /bin/pdksh | */bin/ksh | */bin/pdksh) shell="Korn Shell";;
+       /bin/csh | */bin/csh) shell="C Shell";;
+       /bin/tcsh | */bin/tcsh) shell "Tenex Shell";;
+       /bin/zsh | */bin/zsh) shell="Z Shell $ZSH_VERSION";;
+       /bin/fish | */bin/fish) shell="Fish $FISH_VERSION";;
     esac
     print "Shell: ${BOLD}$shell${NORMAL}"
 }
