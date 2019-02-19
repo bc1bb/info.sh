@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2018.02.18-03"; indev=true
+                 VERSION="2018.02.19-01"; indev=true
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -19,21 +19,7 @@
 # -V / --verbose               : verbose (;p)
 # -u / --upload                : upload output to transfer.sh (without public IPs)
 # -n / --no-internet           : run info.sh without all request to internet
-# -p / --partition [partition] : force partition to check space
-# --force-os [OS]              : force to use the script adapted for some OSes
-# --force-os list              :
-# fedora
-# debian
-# ubuntu
-# freebsd
-# openbsd
-# android-native
-# android-termux
-# ios-ish
-# nutyx
-# macos
-# windows-cygwin
-# unk-linux
+# -p / --partition [partition] : force partition to check space -- IN DEV
 
 if [ "$(which curl 2>/dev/null)" ]; then
         REQMNGR="curl -s --max-time 10"
@@ -275,12 +261,6 @@ while [ ! -z "$1" ]; do
         #partition=$2
         print "this is actually useless, disk space checking is not developped for now"
         shift 2
-    elif [ "$1" = "--force-os" ]; then
-        #verbose "[--force-os] Setting OS to what you said ($2)"
-        #OS=$2
-        print "this is actually useless, special-os list is not developped for now"
-        shift 2
-    fi
 done
 
 verbose
