@@ -261,6 +261,7 @@ while [ ! -z "$1" ]; do
         #partition=$2
         print "this is actually useless, disk space checking is not developped for now"
         shift 2
+    fi
 done
 
 verbose
