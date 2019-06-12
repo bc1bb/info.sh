@@ -2,7 +2,6 @@
 
 <a href="https://github.com/jusdepatate/info.sh/blob/master/info.sh"><i>info.sh</i></a> is a little script that works like `screenfetch` or `neofetch` it shows infos and was originally made for Termux (Linux on Android).
 
-### Check out the [communist fork](https://github.com/orakless/marx.sh) by Oräkle
 #### Thanks to
 Neofetch, DoomQuakeKeen, Dryusdan, Outout, Oräkle, Leeo97one, and the whole community from Gnous (French Linux Discord).
 
