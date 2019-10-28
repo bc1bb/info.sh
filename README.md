@@ -34,6 +34,9 @@ chmod +x info.sh
 sudo mv info.sh /usr/bin/info.sh
 ```
 
+### If you get a `grep` warning
+As I'm too lazy to work, just add `2>/dev/null` at the end of you command (for example `info.sh 2>/dev/null`)
+
 ## Works on
 - Ubuntu (tested with official Ubuntu and WSL)
 - Termux
