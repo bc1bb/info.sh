@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2018.02.19-01"; indev=true
+                 VERSION="2020.02.09-01"; indev=true
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -22,15 +22,20 @@
 # -p / --partition [partition] : force partition to check space -- IN DEV
 
 if [ "$(which curl 2>/dev/null)" ]; then
-        REQMNGR="curl -s --max-time 10"
-        DWNMNGR="curl -s --max-time 10 -LO"
-        UPMNGR="curl --upload-file"
+   REQMNGR="curl -s --max-time 10"
+   DWNMNGR="curl -s --max-time 10 -LO"
+   UPMNGR="curl --upload-file"
 elif [ "$(which wget 2>/dev/null)" ]; then
-        REQMNGR="wget -qO- --timeout=10"
-        DWNMNGR="wget -q --timeout=10"
+   REQMNGR="wget -qO- --timeout=10"
+   DWNMNGR="wget -q --timeout=10"
 else
-        echo "Please install curl or wget"
-        exit 1
+   echo "Please install curl or wget"
+   exit 1
+fi
+
+if [ ! "$(which awk 2>/dev/null)" ]; then
+   echo "Please install awk"
+   exit 1
 fi
 
 if [ "$(which tput 2>/dev/null)" ]; then
@@ -83,13 +88,19 @@ first() {
     verbose "[first()] Read product_name from /sys/devices/virtual/dmi/id/"
     verbose
     
+    if [ ! "$HOSTNAME" = "" ]; then
+        hostname="$HOSTNAME"
+    else
+        hostname="$(hostname)"
+    fi
+
     PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
     if [ ! -z "$PNAME" ] && [ "$PNAME" = "System Product Name" ]; then
-    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL} (${BOLD}$PNAME${NORMAL})"
+    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL} (${BOLD}$PNAME${NORMAL})"
     elif [ "$PNAME" = "System Product Name" ]; then
-    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL}"
+    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL}"
     else
-        print "${BOLD}$(whoami)${NORMAL}@${BOLD}$(hostname)${NORMAL}"
+        print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL}"
     fi
 }
 getos() {
@@ -101,6 +112,12 @@ getos() {
     if [ "$(cat /etc/os-release 2>/dev/null)" ]; then
          source /etc/os-release
          OS="$PRETTY_NAME"
+    elif [ "$(sw_vers -productName 2>/dev/null)" ]; then
+         verbose
+	 verbose "[getos()] sw_vers detected, getting OS name/Version + build version from it"
+	 verbose
+
+         OS="$(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion))"
     else
          OS="$(uname -o)"
     fi
@@ -120,9 +137,6 @@ getpackages() {
     if [ "$(which dpkg 2>/dev/null)" ]; then
         print "${BOLD}$(dpkg --get-selections | grep -c 'install')${NORMAL} (dpkg) \c"
     fi
-    if [ "$(which apt 2>/dev/null)" ]; then
-        print "${BOLD}$(apt list 2>/dev/null | grep -v 'Listing...' | grep 'installed' | wc -l)${NORMAL} (apt) \c"
-    fi
     if [ "$(which apk 2>/dev/null)" ]; then
         print "${BOLD}$(apk list 2>/dev/null | grep -c 'installed')${NORMAL} (apk) \c"
     fi
@@ -135,12 +149,6 @@ getpackages() {
     #if [ "$(which getprop 2>/dev/null && $OS = 'Android' 2>/dev/null)" ]; then
     #    print "${BOLD}$(pkg list-all 2>/dev/null | grep -c 'installed')${NORMAL} (pkg) \c"
     #fi
-    if [ "$(which pip2 2>/dev/null)" ]; then
-	      print "${BOLD}$(pip2 list --format=columns 2>/dev/null | grep -v 'Package ' | grep -v '\-\-\-\-\-\-\-' | wc -l)${NORMAL} (pip2) \c"
-    fi
-    if [ "$(which pip3 2>/dev/null)" ]; then
-	      print "${BOLD}$(pip3 list 2>/dev/null | grep -v 'Package ' | grep -v '\-\-\-\-\-\-\-' | wc -l)${NORMAL} (pip3) \c"
-    fi
     if [ "$(which brew 2>/dev/null)" ]; then
         print "${BOLD}$(brew list | wc -l)${NORMAL} (brew) \c"
     fi
@@ -149,7 +157,7 @@ getpackages() {
 getshell() {
     verbose
     verbose "[getshell()] looking at \$SHELL env var to get actual shell"
-    verbose 
+    verbose
     
     case $SHELL in
        /bin/bash | */bin/bash) shell="Bash $BASH_VERSION";;
@@ -158,7 +166,9 @@ getshell() {
        /bin/tcsh | */bin/tcsh) shell "Tenex Shell";;
        /bin/zsh | */bin/zsh) shell="Z Shell $ZSH_VERSION";;
        /bin/fish | */bin/fish) shell="Fish $FISH_VERSION";;
-    esac
+       /bin/sh) shell="sh";;
+       *) shell="$SHELL";;
+     esac
     print "Shell: ${BOLD}$shell${NORMAL}"
 }
 getpubip4() {
