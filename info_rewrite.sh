@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2020.02.22-01"; indev=true
+                 VERSION="2020.02.22-02"; indev=true
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -19,7 +19,6 @@
 # -V / --verbose               : verbose (;p)
 # -u / --upload                : upload output to transfer.sh (without public IPs)
 # -n / --no-internet           : run info.sh without all request to internet
-# -p / --partition [partition] : force partition to check space -- IN DEV
 
 if [ "$(which curl 2>/dev/null)" ]; then
    REQMNGR="curl -s --max-time 10"
@@ -98,10 +97,101 @@ first() {
 
     if [ ! -z "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ] && [ ! "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" = "System Product Name" ]; then
     	PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
-    elif [ "$(getprop ro.product.manufacturer)" ]; then
+    elif [ "$(getprop ro.product.manufacturer 2>/dev/null)" ]; then
         PNAME="$(getprop ro.product.manufacturer) $(getprop ro.rr.device)"
     fi
 
+    # iDevices PNAMES (fml for adding them one by one):
+    if [ "$(uname -m | grep 'iPhone')" ]; then
+        iDevice="$(uname -m)"
+
+        case $iDevice in
+            iPhone1,2) PNAME="iPhone 3G";;
+            iPhone2,1) PNAME="iPhone 3GS";;
+            iPhone3,*) PNAME="iPhone 4";;
+            iPhone4,1) PNAME="iPhone 4S";;
+            iPhone5,1 | iPhone5,2) PNAME="iPhone 5";;
+            iPhone5,3 | iPhone5,4) PNAME="iPhone 5C";;
+            iPhone6,1 | iPhone6,2) PNAME="iPhone 5S";;
+            iPhone7,1) PNAME="iPhone 6 Plus";;
+            iPhone7,2) PNAME="iPhone 6";;
+            iPhone8,1) PNAME="iPhone 6s";;
+            iPhone8,2) PNAME="iPhone 6s Plus";;
+            iPhone8,4) PNAME="iPhone SE";;
+            iPhone9,1 | iPhone9,3) PNAME="iPhone 7";;
+            iPhone9,2 | iPhone9,4) PNAME="iPhone 7 Plus";;
+            iPhone10,1 | iPhone10,4) PNAME="iPhone 8";;
+            iPhone10,2 | iPhone10,5) PNAME="iPhone 8 Plus";;
+            iPhone10,3 | iPhone10,6) PNAME="iPhone X";;
+            iPhone11,2) PNAME="iPhone Xs";;
+            iPhone11,4 | iPhone11,6) PNAME="iPhone Xs Max";;
+            iPhone11,8) PNAME="iPhone Xr";;
+            iPhone12,1) PNAME="iPhone 11";;
+            iPhone12,3) PNAME="iPhone 11 Pro";;
+            iPhone12,5) PNAME="iPhone 11 Pro Max";;
+            *) PNAME="$iDevice";;
+        esac
+    elif [ "$(uname -m | grep 'iPod')" ]; then
+        iDevice="$(uname -m)"
+
+        case $iDevice in
+            iPod1,1) PNAME="iPod 1st Gen";;
+            iPod2,1) PNAME="iPod 2nd Gen";;
+            iPod3,1) PNAME="iPod 3rd Gen";;
+            iPod4,1) PNAME="iPod 4th Gen";;
+            iPod5,1) PNAME="iPod 5th Gen";;
+            iPod7,1) PNAME="iPod 6th Gen";;
+            iPod9,1) PNAME="iPod 7th Gen";;
+            *) PNAME="$iDevice";;
+        esac
+    elif [ "$(uname -m | grep 'iPad')" ]; then
+        iDevice="$(uname -m)"
+
+        case $iDevice in
+            iPad1,1 | iPad1,2) PNAME="iPad";;
+            iPad2,1 | iPad2,2 | iPad2,3 | iPad2,4) PNAME="iPad 2nd Gen";;
+            iPad3,1 | iPad3,2 | iPad3,3) PNAME="iPad 3rd Gen";;
+            iPad2,5 | iPad2,6 | iPad2,7) PNAME="iPad Mini";;
+            iPad3,4 | iPad3,5 | iPad3,6) PNAME="iPad 4th Gen";;
+            iPad4,1 | iPad4,2 | iPad4,3) PNAME="iPad Air";;
+            iPad4,4 | iPad4,5 | iPad4,6) PNAME="iPad Mini Retina";;
+            iPad4,7 | iPad4,8 | iPad4,9) PNAME="iPad Mini 3";;
+            iPad5,1 | iPad5,2) PNAME="iPad Mini 4";;
+            iPad5,3 | iPad5,4) PNAME="iPad Air 2";;
+            iPad6,3 | iPad6,4 | iPad6,7 | iPad6,8) PNAME="iPad Pro";;
+            iPad6,11 | iPad6,12) PNAME="iPad 5th Gen";;
+            iPad7,1 | iPad7,2 | iPad7,3 | iPad7,4) PNAME="iPad Pro 2th Gen";;
+            iPad7,5 | iPad7,6) PNAME="iPad 6th Gen";;
+            iPad7,11 | iPad7,12) PNAME="iPad 7th Gen";;
+            iPad8,*) PNAME="iPad Pro 3rd Gen";;
+            iPad11,1 | iPad11,2) PNAME="iPad Mini 5th Gen";;
+            iPad11,3 | iPad11,4) PNAME="iPad Air 3rd Gen";;
+            *) PNAME="$iDevice";;
+        esac
+    elif [ "$(uname -m | grep 'Watch')" ]; then
+        iDevice="$(uname -m)"
+
+        case $iDevice in
+            Watch1,1 | Watch1,2) PNAME="Apple Watch";;
+            Watch2,6 | Watch2,7) PNAME="Apple Watch Series 1";;
+            Watch2,3 | Watch2,4) PNAME="Apple Watch Series 2";;
+            Watch3,*) PNAME="Apple Watch Series 3";;
+            Watch4,*) PNAME="Apple Watch Series 4";;
+            Watch5,*) PNAME="Apple Watch Series 5";;
+            *) PNAME="$iDevice";;
+        esac
+    elif [ "$(uname -m | grep 'AppleTV')" ]; then
+        iDevice="$(uname -m)"
+
+        case $iDevice in
+            AppleTV1,1) PNAME="Apple TV 1st Gen";;
+            AppleTV2,1) PNAME="Apple TV 2nd Gen";;
+            AppleTV3,1 | AppleTV3,2) PNAME="Apple TV 3rd Gen";;
+            AppleTV5,3) PNAME="Apple TV 4th Gen";;
+            AppleTV6,2) PNAME="Apple TV 4K";;
+            *) PNAME="$iDevice";;
+        esac
+    fi
     if [ ! -z "$PNAME" ]; then
         print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL} (${BOLD}$PNAME${NORMAL})"
     else
@@ -113,7 +203,7 @@ getos() {
     verbose "[getos()] getting variables from /etc/os-release"
     verbose "[getos()] getting OS and kernel version"
     verbose
-    
+
     if [ "$(cat /etc/os-release 2>/dev/null)" ]; then
          source /etc/os-release
          OS="$PRETTY_NAME"
@@ -123,7 +213,7 @@ getos() {
 	 verbose
 
          OS="$(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion))"
-    elif [ "$(getprop | grep 'android')" ]; then
+    elif [ "$(getprop | grep 'android' 2>/dev/null)" ]; then
          # command available on Termux and on native shell
          verbose
          verbose "[getos()] Android's getprop detected"
@@ -137,12 +227,18 @@ getos() {
          OS="$(uname -o)"
     fi
     print "${BOLD}$OS${NORMAL} (${UNDER}$(uname -o) $(uname -r)${NORMAL})"
-    
+
     verbose
     verbose "[getos()] Getting arch from uname"
     verbose
-    
-    print "Arch: ${BOLD}$(uname -m)${NORMAL}"
+
+    if [ "$(uname --processor)" ]; then
+        ARCH="$(uname --processor)"
+    else
+        ARCH="$(uname -m)"
+    fi
+
+    print "Arch: ${BOLD}$ARCH${NORMAL}"
 }
 getpackages() {
     verbose
@@ -161,9 +257,6 @@ getpackages() {
     if [ "$(which flatpak 2>/dev/null)" ]; then
         print "${BOLD}$(flatpak list 2>/dev/null | wc -l)${NORMAL} (flatpak) \c"
     fi
-    #if [ "$(which getprop 2>/dev/null && $OS = 'Android' 2>/dev/null)" ]; then
-    #    print "${BOLD}$(pkg list-all 2>/dev/null | grep -c 'installed')${NORMAL} (pkg) \c"
-    #fi
     if [ "$(which brew 2>/dev/null)" ]; then
         print "${BOLD}$(brew list | wc -l)${NORMAL} (brew) \c"
     fi
