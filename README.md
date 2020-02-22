@@ -27,7 +27,7 @@ Download file : `curl "https://raw.githubusercontent.com/jusdepatate/info.sh/mas
 
 Update using `bash info.sh --update`
 
-And if you are an absolute fan of info.sh you can try this :
+And if you are an absolute fan of info.sh you can try this : (why would one do this lmao)
 ```
 curl "https://raw.githubusercontent.com/jusdepatate/info.sh/master/info_rewrite.sh" -o info.sh
 chmod +x info.sh
@@ -40,12 +40,15 @@ As I'm too lazy to work, just add `2>/dev/null` at the end of you command (for e
 ## Works on
 - Ubuntu (tested with official Ubuntu and WSL)
 - Termux
+- Native Android shell
 - Debian (official and WSL)
 - Alpine Linux
 - Fedora
 - \*BSD
 - Arch Linux
 - NuTyX
+- iSH
+- Native iOS shell
 
 ## Doesn't works on
 ### Partially works
@@ -66,7 +69,6 @@ As I'm too lazy to work, just add `2>/dev/null` at the end of you command (for e
 - [~~Compatibility with macOS~~](https://github.com/jusdepatate/info.sh/commit/609b744cc6ba6b9da350cfb3f979c2f53941368f)
 - [~~Compatibility with \*BSD~~](https://github.com/jusdepatate/info.sh/commit/df4f9159a4f8e85af494e8216d3ae0124b9e7ab1)
 - [~~Compatibility with Arch Linux~~](https://github.com/jusdepatate/info.sh/commit/40539e49c42bcd44eefa9ce71ae2fb89e53cfd73)
-- [~~.bat version~~](https://github.com/jusdepatate/info.sh/commit/429e13447603005a4631155ed11b436d3561e29e)
 - [~~Show IPv4 and IPv6 on two different line~~](https://github.com/jusdepatate/info.sh/commit/c2a929935705e8647f2cce32a9d5e4fc54d026a6)
 - [~~Explain every line~~](https://github.com/jusdepatate/info.sh/commit/f45db7cf90e5f412541e4a05098dfabed694d5d0) [2](https://github.com/jusdepatate/info.sh/commit/3f146f235e72d52c1a30fa86bc43c73ef3b6a2d6)
 - [~~Test if curl is here, if not present, use wget.~~](https://github.com/jusdepatate/info.sh/commit/f3c73c9e1414253f8dd1dee4871184b804cfb49a) [2](https://github.com/jusdepatate/info.sh/commit/0b3bb3e68c767872a8289fb3d4e4f9abae7fd23c)
@@ -77,5 +79,4 @@ As I'm too lazy to work, just add `2>/dev/null` at the end of you command (for e
 ## Example :
 check folder `screenshot`
 
-Pull requests and issues are welcome :)<br>
-<img width="80px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/By-nc.svg/2560px-By-nc.svg">
+Pull requests and issues are welcome :)
