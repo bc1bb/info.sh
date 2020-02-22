@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2020.02.09-01"; indev=true
+                 VERSION="2020.02.22-01"; indev=true
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -11,7 +11,7 @@
 # The version you are on is the rewrite from 2019.
 # Same features, better.
 #
-# Copyright (c) 2018-2019, Jus de Patate
+# Copyright (c) 2018-2020, Jus de Patate
 # under BSD-3-CLAUSE licence
 # Arguments :
 # -v / --version               : output version of info.sh
@@ -88,17 +88,22 @@ first() {
     verbose "[first()] Read product_name from /sys/devices/virtual/dmi/id/"
     verbose
     
-    if [ ! "$HOSTNAME" = "" ]; then
+    if [ ! -z "$HOSTNAME" ]; then
         hostname="$HOSTNAME"
+    elif [ "$(getprop net.hostname 2>/dev/null)" ]; then
+        hostname="$(getprop net.hostname)"
     else
         hostname="$(hostname)"
     fi
 
-    PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
-    if [ ! -z "$PNAME" ] && [ "$PNAME" = "System Product Name" ]; then
-    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL} (${BOLD}$PNAME${NORMAL})"
-    elif [ "$PNAME" = "System Product Name" ]; then
-    	print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL}"
+    if [ ! -z "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ] && [ ! "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" = "System Product Name" ]; then
+    	PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
+    elif [ "$(getprop ro.product.manufacturer)" ]; then
+        PNAME="$(getprop ro.product.manufacturer) $(getprop ro.rr.device)"
+    fi
+
+    if [ ! -z "$PNAME" ]; then
+        print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL} (${BOLD}$PNAME${NORMAL})"
     else
         print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL}"
     fi
@@ -118,7 +123,17 @@ getos() {
 	 verbose
 
          OS="$(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion))"
+    elif [ "$(getprop | grep 'android')" ]; then
+         # command available on Termux and on native shell
+         verbose
+         verbose "[getos()] Android's getprop detected"
+         verbose
+
+         OS="Android $(getprop ro.build.version.release)"
     else
+         verbose
+         verbose "[getos()] Couldnt find os, using uname -o"
+         verbose
          OS="$(uname -o)"
     fi
     print "${BOLD}$OS${NORMAL} (${UNDER}$(uname -o) $(uname -r)${NORMAL})"
@@ -166,7 +181,7 @@ getshell() {
        /bin/tcsh | */bin/tcsh) shell "Tenex Shell";;
        /bin/zsh | */bin/zsh) shell="Z Shell $ZSH_VERSION";;
        /bin/fish | */bin/fish) shell="Fish $FISH_VERSION";;
-       /bin/sh) shell="sh";;
+       /bin/sh | */bin/sh) shell="sh";;
        *) shell="$SHELL";;
      esac
     print "Shell: ${BOLD}$shell${NORMAL}"
