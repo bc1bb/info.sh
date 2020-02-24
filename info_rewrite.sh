@@ -234,6 +234,9 @@ getos() {
 
     if [ "$(uname --processor)" ]; then
         ARCH="$(uname --processor)"
+        if [ $ARCH == "unknown" ]; then
+        	ARCH="$(uname -m)"
+        fi
     else
         ARCH="$(uname -m)"
     fi
