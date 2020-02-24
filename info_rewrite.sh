@@ -3,7 +3,7 @@
 # Jus de Patate <yaume@ntymail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2020.02.24-01"; indev=true
+                 VERSION="2020.02.22-02"; indev=true
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -232,10 +232,10 @@ getos() {
     verbose "[getos()] Getting arch from uname"
     verbose
 
-    if [ "$(uname -m)" ]; then
-        ARCH="$(uname -m)"
-    else
+    if [ "$(uname --processor)" ]; then
         ARCH="$(uname --processor)"
+    else
+        ARCH="$(uname -m)"
     fi
 
     print "Arch: ${BOLD}$ARCH${NORMAL}"
