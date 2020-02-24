@@ -232,11 +232,8 @@ getos() {
     verbose "[getos()] Getting arch from uname"
     verbose
 
-    if [ "$(uname --processor)" ]; then
+    if [ "$(uname --processor)" ] && [ "$(uname --processor)" != "unknown" ]; then
         ARCH="$(uname --processor)"
-        if [ $ARCH == "unknown" ]; then
-        	ARCH="$(uname -m)"
-        fi
     else
         ARCH="$(uname -m)"
     fi
