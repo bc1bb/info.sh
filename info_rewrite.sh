@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 #
-# Jus de Patate <yaume@ntymail.com>
+# Jus de Patate <jusdepatate@protonmail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2020.02.22-02"; indev=true
+                 VERSION="2021.12.16-01"
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
-# it shows infos and was originally made for Termux (Linux on Android).
+# it shows infos and was originally made for Termux (Android Terminal).
 # The version you are on is the rewrite from 2019.
 # Same features, better.
 #
-# Copyright (c) 2018-2020, Jus de Patate
+# Copyright (c) 2018-2022, Jus de Patate
 # under BSD-3-CLAUSE licence
 # Arguments :
 # -v / --version               : output version of info.sh
@@ -73,7 +73,7 @@ verbose() {
 }
 banner() {
     msg="# $* #"
-    edge=$(echo "$msg" | sed 's/./#/g')
+    edge="$(echo "$msg" | sed 's/./#/g')"
     echo "$edge"
     echo "$msg"
     echo "$edge"
@@ -81,13 +81,12 @@ banner() {
 # https://unix.stackexchange.com/a/250094
 
 first() {
-    banner $(date "+%A %d %B, %Y")
+    banner "$(date "+%A %d %B, %Y")"
     print
     verbose "[first()] Execute 'whoami' and 'hostname' to get username and machine name"
     verbose "[first()] Read product_name from /sys/devices/virtual/dmi/id/"
-    verbose
     
-    if [ ! -z "$HOSTNAME" ]; then
+    if [ -n "$HOSTNAME" ]; then
         hostname="$HOSTNAME"
     elif [ "$(getprop net.hostname 2>/dev/null)" ]; then
         hostname="$(getprop net.hostname)"
@@ -95,15 +94,19 @@ first() {
         hostname="$(hostname)"
     fi
 
-    if [ ! -z "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ] && [ ! "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" = "System Product Name" ]; then
+    verbose "[first()] Trying /sys/devices/virtual/dmi/id/product_name"
+    if [ -n "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" ] && [ ! "$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)" = "System Product Name" ]; then
     	PNAME="$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null)"
+    verbose "[first()] Trying getprop"
     elif [ "$(getprop ro.product.manufacturer 2>/dev/null)" ]; then
         PNAME="$(getprop ro.product.manufacturer) $(getprop ro.rr.device)"
     fi
 
+    verbose "[first()] Trying iDevices"
     # iDevices PNAMES (fml for adding them one by one):
     if [ "$(uname -m | grep 'iPhone')" ]; then
         iDevice="$(uname -m)"
+        verbose "[first()] iPhone detected"
 
         case $iDevice in
             iPhone1,2) PNAME="iPhone 3G";;
@@ -129,10 +132,20 @@ first() {
             iPhone12,1) PNAME="iPhone 11";;
             iPhone12,3) PNAME="iPhone 11 Pro";;
             iPhone12,5) PNAME="iPhone 11 Pro Max";;
+            iPhone12,8) PNAME="iPhone SE 2nd Gen";;
+            iPhone13,1) PNAME="iPhone 12 Mini";;
+            iPhone13,2) PNAME="iPhone 12";;
+            iPhone13,3) PNAME="iPhone 12 Pro";;
+            iPhone13,4) PNAME="iPhone 12 Pro Max";;
+            iPhone14,2) PNAME="iPhone 13 Pro";;
+            iPhone14,3) PNAME="iPhone 13 Pro Max";;
+            iPhone14,4) PNAME="iPhone 13 Mini";;
+            iPhone14,5) PNAME="iPhone 13";;
             *) PNAME="$iDevice";;
         esac
     elif [ "$(uname -m | grep 'iPod')" ]; then
         iDevice="$(uname -m)"
+        verbose "[first()] iPod detected"
 
         case $iDevice in
             iPod1,1) PNAME="iPod 1st Gen";;
@@ -146,6 +159,7 @@ first() {
         esac
     elif [ "$(uname -m | grep 'iPad')" ]; then
         iDevice="$(uname -m)"
+        verbose "[first()] iPad detected"
 
         case $iDevice in
             iPad1,1 | iPad1,2) PNAME="iPad";;
@@ -163,13 +177,19 @@ first() {
             iPad7,1 | iPad7,2 | iPad7,3 | iPad7,4) PNAME="iPad Pro 2th Gen";;
             iPad7,5 | iPad7,6) PNAME="iPad 6th Gen";;
             iPad7,11 | iPad7,12) PNAME="iPad 7th Gen";;
-            iPad8,*) PNAME="iPad Pro 3rd Gen";;
+            iPad8,*) PNAME="iPad Pro 3rd/4th Gen";;
             iPad11,1 | iPad11,2) PNAME="iPad Mini 5th Gen";;
             iPad11,3 | iPad11,4) PNAME="iPad Air 3rd Gen";;
+            iPad11,6 | iPad11,7) PNAME="iPad 8th Gen";;
+            iPad12,1 | iPad12,2) PNAME="iPad 9th Gen";;
+            iPad13,1 | iPad13,2) PNAME="iPad Air 4th Gen";;
+            iPad13,*) PNAME="iPad Pro 5th Gen";;
+            iPad14,1 | iPad14,2) PNAME="iPad mini 6th Gen";;
             *) PNAME="$iDevice";;
         esac
     elif [ "$(uname -m | grep 'Watch')" ]; then
         iDevice="$(uname -m)"
+        verbose "[first()] Apple Watch detected"
 
         case $iDevice in
             Watch1,1 | Watch1,2) PNAME="Apple Watch";;
@@ -177,11 +197,15 @@ first() {
             Watch2,3 | Watch2,4) PNAME="Apple Watch Series 2";;
             Watch3,*) PNAME="Apple Watch Series 3";;
             Watch4,*) PNAME="Apple Watch Series 4";;
-            Watch5,*) PNAME="Apple Watch Series 5";;
+            Watch5,1 | Watch5,2 | Watch5,3 | Watch5,4) PNAME="Apple Watch Series 5";;
+            Watch5,*) PNAME="Apple Watch SE";;
+            Watch6,1 | Watch6,2 | Watch6,3 | Watch6,4) PNAME="Apple Watch Series 6";;
+            Watch6,*) PNAME="Apple Watch Series 7";;
             *) PNAME="$iDevice";;
         esac
     elif [ "$(uname -m | grep 'AppleTV')" ]; then
         iDevice="$(uname -m)"
+        verbose "[first()] Apple TV detected"
 
         case $iDevice in
             AppleTV1,1) PNAME="Apple TV 1st Gen";;
@@ -192,11 +216,12 @@ first() {
             *) PNAME="$iDevice";;
         esac
     fi
-    if [ ! -z "$PNAME" ]; then
+    if [ -n "$PNAME" ]; then
         print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL} (${BOLD}$PNAME${NORMAL})"
     else
         print "${BOLD}$(whoami)${NORMAL}@${BOLD}$hostname${NORMAL}"
     fi
+    verbose
 }
 getos() {
     verbose
@@ -209,9 +234,8 @@ getos() {
          OS="$PRETTY_NAME"
     elif [ "$(sw_vers -productName 2>/dev/null)" ]; then
          verbose
-	 verbose "[getos()] sw_vers detected, getting OS name/Version + build version from it"
-	 verbose
-
+         verbose "[getos()] sw_vers detected, getting OS name/Version + build version from it"
+         verbose
          OS="$(sw_vers -productName) $(sw_vers -productVersion) ($(sw_vers -buildVersion))"
     elif [ "$(getprop | grep 'android' 2>/dev/null)" ]; then
          # command available on Termux and on native shell
@@ -246,18 +270,19 @@ getpackages() {
     verbose
     print "Packages: \c"
     if [ "$(which dpkg 2>/dev/null)" ]; then
+        verbose "[getpackages()] dpkg detected"
         print "${BOLD}$(dpkg --get-selections | grep -c 'install')${NORMAL} (dpkg) \c"
     fi
-    if [ "$(which apk 2>/dev/null)" ]; then
-        print "${BOLD}$(apk list 2>/dev/null | grep -c 'installed')${NORMAL} (apk) \c"
-    fi
     if [ "$(which pacman 2>/dev/null)" ]; then
+        verbose "[getpackages()] pacman detected"
         print "${BOLD}$(pacman -Q 2>/dev/null | wc -l)${NORMAL} (pacman) \c"
     fi
     if [ "$(which flatpak 2>/dev/null)" ]; then
+        verbose "[getpackages()] flatpak detected"
         print "${BOLD}$(flatpak list 2>/dev/null | wc -l)${NORMAL} (flatpak) \c"
     fi
     if [ "$(which brew 2>/dev/null)" ]; then
+        verbose "[getpackages()] brew detected"
         print "${BOLD}$(brew list | wc -l)${NORMAL} (brew) \c"
     fi
     print
@@ -311,14 +336,14 @@ getpubip6() {
     verbose
     verbose "[getpubip6()] Checking if you have IPv6"
     ipv6="$($REQMNGR https://v6.ident.me)"
-    if [ ! -z "$ipv6" ]; then
+    if [ -n "$ipv6" ]; then
        verbose "[getpubip6()] I got an IPv6"
        verbose
        print "Public IPv6 : ${BOLD}$ipv6${NORMAL} (${BOLD}$as${NORMAL} - ${BOLD}$operator${NORMAL} - $cc)"
     fi
   else
     verbose
-    verbose "[getpubip6()] \$norequest is true, so no skipping this part"
+    verbose "[getpubip6()] \$norequest is true, so skipping this part"
     verbose
   fi
 }
@@ -341,7 +366,7 @@ footer() {
 }
 
 # Arguments :
-while [ ! -z "$1" ]; do
+while [ -n "$1" ]; do
     if [ "$1" = "--version" ] || [ "$1" = "-v" ]; then
         print "info.sh $VERSION"
         shift
@@ -359,8 +384,6 @@ while [ ! -z "$1" ]; do
         # if [ "$verbose" ]; then echo "ok"; fi
         # or use the function verbose()
         # verbose ok
-        
-        if [ "$verbose" ] && [ "$indev" ]; then print "[-v] Using indev version can give error or spoil new features"; fi
         shift
     elif [ "$1" = "--upload" ] || [ "$1" = "-u" ]; then
         upload=true
@@ -374,11 +397,6 @@ while [ ! -z "$1" ]; do
             upload=false
         fi
         shift
-    elif [ "$1" = "--partition" ] || [ "$1" = "-p" ]; then
-        #verbose "[-p] Setting partition to what you said ($2)"
-        #partition=$2
-        print "this is actually useless, disk space checking is not developped for now"
-        shift 2
     fi
 done
 
