@@ -3,7 +3,7 @@
 # Jus de Patate <jusdepatate@protonmail.com>
 # First release   :       2018.11.10-01
 # Rewrite release :       2019.01.01-16
-                 VERSION="2021.12.16-01"
+                 VERSION="2022.08.24-01"
 #                         yyyy.mm.dd
 #
 # info.sh is a little script that works like `neofetch` or `screenfetch`
@@ -250,13 +250,14 @@ getos() {
          verbose
          OS="$(uname -o)"
     fi
-    print "${BOLD}$OS${NORMAL} (${UNDER}$(uname -o) $(uname -r)${NORMAL})"
+
+    print "${BOLD}$OS${NORMAL} (${UNDER}$(uname -o 2>/dev/null || uname -s 2>/dev/null) $(uname -r)${NORMAL})"
 
     verbose
     verbose "[getos()] Getting arch from uname"
     verbose
 
-    if [ "$(uname --processor)" ] && [ "$(uname --processor)" != "unknown" ]; then
+    if [ "$(uname --processor 2>/dev/null)" ] && [ "$(uname --processor 2>/dev/null)" != "unknown" ]; then
         ARCH="$(uname --processor)"
     else
         ARCH="$(uname -m)"
@@ -283,7 +284,7 @@ getpackages() {
     fi
     if [ "$(which brew 2>/dev/null)" ]; then
         verbose "[getpackages()] brew detected"
-        print "${BOLD}$(brew list | wc -l)${NORMAL} (brew) \c"
+        print "${BOLD}$(brew list | wc -l | sed 's/ //g')${NORMAL} (brew) \c"
     fi
     print
 }

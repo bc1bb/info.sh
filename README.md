@@ -37,6 +37,7 @@ As I'm too lazy to work, just add `2>/dev/null` at the end of you command (for e
 - NuTyX
 - iSH
 - Native iOS shell
+- macOS
 
 ## Doesn't work on
 ### Partially works
